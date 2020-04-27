@@ -1,0 +1,65 @@
+FROM continuumio/miniconda3:4.8.2
+
+LABEL name="quantum-dev"
+LABEL description="Quantum Computing Development Environment"
+LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
+LABEL vendor="NTT DATA"
+
+# Set version levels
+ENV GCC_VERSION 4:8.3.0-1
+ENV CONDA_VERSION 4.8.3
+ENV JUPYTER_VERSION 1.0.0
+ENV PYTHON_VERSION 3.7.6
+ENV IPYKERNEL_VERSION 5.1.4
+ENV QISKIT_VERSION 0.18.1
+ENV CIRQ_VERSION 0.7.0
+ENV TENSORFLOW_VERSION 2.1.0
+ENV TENSORFLOW_QUANTUM_VERSION 0.2.0
+ENV PENNYLANE_VERSION 0.8.1
+ENV DWAVE_OCEAN_SDK_VERSION 2.1.1
+
+# Install GCC on Linux
+RUN apt-get install --yes gcc=$GCC_VERSION
+
+# Update Conda
+RUN conda install --yes conda=$CONDA_VERSION
+
+# Install Jupyter
+RUN conda install --yes --quiet jupyter=$JUPYTER_VERSION
+
+# Create Jupyter Notebook folder
+RUN mkdir /opt/notebooks && cd /opt/notebooks
+
+# Create environment for IBM Qiskit
+RUN conda create --name qiskit --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name qiskit pip install qiskit==$QISKIT_VERSION
+RUN conda run --name qiskit python -m ipykernel install --user --name qiskit --display-name "Qiskit"
+
+# Create environment for Google Cirq and Tensoflow Quantum
+RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name cirq pip install cirq==$CIRQ_VERSION
+RUN conda run --name cirq pip install tensorflow==$TENSORFLOW_VERSION
+RUN conda run --name cirq pip install tensorflow-quantum==$TENSORFLOW_QUANTUM_VERSION
+RUN conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
+
+# Create environment for Xanadu PennyLane
+RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name pennylane pip install pennylane==$PENNYLANE_VERSION
+RUN conda run --name pennylane python -m ipykernel install --user --name pennylane --display-name "PennyLane"
+
+# Create environment for D-Wave Ocean
+RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name ocean pip install dwave-ocean-sdk==$DWAVE_OCEAN_SDK_VERSION
+RUN conda run --name ocean python -m ipykernel install --user --name ocean --display-name "Ocean"
+
+# Clean Conda installation
+RUN conda clean --yes --all
+
+# Expose port for Jupyter Notebook web access
+EXPOSE 8888
+
+# Set working directory
+WORKDIR /opt/notebooks
+
+# Define default command to start bash
+CMD ["bash"]

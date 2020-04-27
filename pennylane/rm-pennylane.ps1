@@ -1,0 +1,1 @@
+docker rm --force pennylane-dev

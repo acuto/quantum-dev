@@ -1,0 +1,1 @@
+docker rmi --force miniconda-quantum:20.04

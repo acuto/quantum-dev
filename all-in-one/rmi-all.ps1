@@ -1,0 +1,1 @@
+docker rmi --force quantum-dev:20.04

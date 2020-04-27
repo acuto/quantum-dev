@@ -1,0 +1,26 @@
+FROM continuumio/miniconda3:4.8.2
+
+LABEL name="miniconda-quantum"
+LABEL description="Miniconda environment for Quantum Computing"
+LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
+LABEL vendor="NTT DATA"
+
+# Set version levels
+ENV GCC_VERSION 4:8.3.0-1
+ENV CONDA_VERSION 4.8.3
+ENV JUPYTER_VERSION 1.0.0
+
+# Install GCC on Linux
+RUN apt-get install --yes gcc=$GCC_VERSION
+
+# Update Conda
+RUN conda install --yes conda=$CONDA_VERSION
+
+# Install Jupyter
+RUN conda install --yes --quiet jupyter=$JUPYTER_VERSION
+
+# Create Jupyter Notebook folder
+RUN mkdir /opt/notebooks && cd /opt/notebooks
+
+# Define default command to start bash
+CMD ["bash"]

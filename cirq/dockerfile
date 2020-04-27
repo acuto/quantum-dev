@@ -1,0 +1,32 @@
+FROM miniconda-quantum:20.04
+
+LABEL name="cirq-dev"
+LABEL description="Development Environment for Google Cirq and Tensoflow Quantum"
+LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
+LABEL vendor="NTT DATA"
+
+# Set version levels
+ENV PYTHON_VERSION 3.7.6
+ENV IPYKERNEL_VERSION 5.1.4
+ENV CIRQ_VERSION 0.7.0
+ENV TENSORFLOW_VERSION 2.1.0
+ENV TENSORFLOW_QUANTUM_VERSION 0.2.0
+
+# Create environment for Google Cirq and Tensoflow Quantum
+RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name cirq pip install cirq==$CIRQ_VERSION
+RUN conda run --name cirq pip install tensorflow==$TENSORFLOW_VERSION
+RUN conda run --name cirq pip install tensorflow-quantum==$TENSORFLOW_QUANTUM_VERSION
+RUN conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
+
+# Clean Conda installation
+RUN conda clean --yes --all
+
+# Expose port for Jupyter Notebook web access
+EXPOSE 8882
+
+# Set working directory
+WORKDIR /opt/notebooks
+
+# Define default command to start bash
+CMD ["bash"]

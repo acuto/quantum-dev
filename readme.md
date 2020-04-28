@@ -41,7 +41,7 @@ PS> Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V –All
 ---
 > **Note**: Being Windows the most common platform for enterprise workstations, all included shell scripts are formatted as PowerShell files (``.ps1``). In order to execute scripts in a macOS or Linux environment, it is sufficient to rename them as Bash or Zsh files (``.sh``) &mdash; the used syntax being invariant. If using a Windows platform, it is strongly advised to use PowerShell as the terminal.
 ---
-> **Note**: Docker Desktop relies on a Linux Virtual Machine on Windows and Mac hosts. The size of the VM tends to grow in size with time &mdash; due a faulty estimation of free disk blocks in the Docker/Linux system. If getting low in disk free space, issue a "Reset to factory defaults" on the ``Troubleshoot`` panel in the Docker Desktop application. Also manually deleting the Virtual Disk file when Docker Desktop is not running is considered to be safe &mdash; an empty Virtual Disk is automatically recreated upon Docker Desktop next startup. The location of the Virtual Disk (e.g. ``C:\ProgramData\DockerDesktop\vm-data`` on Windows) can be found from the ``Settings/Resources`` panel in the Docker Desktop application. Consider that all containers and images will be lost as a result of that operation &mdash; but remember that containers are meant to be volatile by design! If you cannot rely on a local Docker Registry, in order to avoid massive data download when rebuilding images, consider saving your built images (see below "_Saving and loading Docker images_").
+> **Note**: Docker Desktop relies on a Linux Virtual Machine on Windows and Mac hosts. The size of the VM tends to grow in size with time &mdash; due a faulty estimation of free disk blocks in the Docker/Linux system. If getting low in disk free space, issue a "Reset to factory defaults" on the ``Troubleshoot`` panel in the Docker Desktop application. Also manually deleting the Virtual Disk file when Docker Desktop is not running is considered to be safe &mdash; an empty Virtual Disk is automatically recreated upon Docker Desktop next startup. The location of the Virtual Disk (e.g. ``C:\ProgramData\DockerDesktop\vm-data`` on Windows) can be taken from the ``Settings/Resources`` panel in the Docker Desktop application. Consider that all containers and images will be lost as a result of that operation &mdash; but remember that containers are meant to be volatile by design! If you cannot rely on a local Docker Registry, in order to avoid massive data download when rebuilding images, consider saving your built images (see below "_Saving and loading Docker images_").
 ---
 
 ## All-In-One setup
@@ -58,10 +58,12 @@ $ docker build --no-cache -t quantum-dev:20.04 .
 Once the Docker image is built, the container is ready to be executed (``run-all`` script):
 
 ```sh
-$ docker run -it --name quantum-dev -p 8888:8888 quantum-dev:20.04 /bin/bash -c "/opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root"
+$ docker run -it --name quantum-dev -v ${HOME}:/opt/notebooks -p 8888:8888 quantum-dev:20.04 /bin/bash -c "/opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root"
 ```
 
-The link to the Jupyter Notebook web interface can be copied from the command output &mdash; e.g.:
+The above command enables a volume to share Jupyter Notebooks and any other files between the host and the container &mdash; whose mount point is set to ``/opt/notebooks``. The folder shared on the host is by default the home folder: in order to set your own preference, just replace the ``${HOME}`` statement in the script with the full path to your chosen folder. Use native path syntax when running on Windows, Mac or Linux hosts.
+
+The URL of the Jupyter Notebook web interface can be copied from the command output &mdash; e.g.:
 
     To access the notebook, open this file in a browser:
         file:///root/.local/share/jupyter/runtime/nbserver-1-open.html
@@ -75,7 +77,7 @@ The Jupyter server in the container can be gracefully shut down by typing ``CTRL
 
 Instead of assembling one container featuring all quantum frameworks as different Conda environments, it is possible to build separate containers for each framework. This proves effective when focusing on a given framework. In the following we shall provide details for building and executing Qiskit &mdash; for the other supported frameworks, simply repeat framwework-specific steps in the proper directory.
 
-As a first step, valid for all frameworks, we have to build an intermediate base image &mdash; ``miniconda-quantum``, providing framework-independent operations on the base [``continuumio/miniconda3``](https://hub.docker.com/r/continuumio/miniconda3/) image &mdash; through the following command (more easily, by executing the ``build-miniconda-quantum`` script in the ``miniconda-quantum`` directory):
+As a first step, valid for all frameworks, we have to build an intermediate base image &mdash; ``miniconda-quantum``, providing framework-independent operations over the base [``continuumio/miniconda3``](https://hub.docker.com/r/continuumio/miniconda3/) image &mdash; through the following command (more easily, by executing the ``build-miniconda-quantum`` script in the ``miniconda-quantum`` directory):
 
 ```sh
 $ cd miniconda-quantum
@@ -92,10 +94,10 @@ $ docker build --no-cache -t qiskit-dev:20.04 .
 Once the Docker image is built, the container is ready to be executed (``run-qiskit`` script):
 
 ```sh
-$ docker run -it --name qiskit-dev -p 8881:8881 qiskit-dev:20.04 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root"
+$ docker run -it --name qiskit-dev -v ${HOME}:/opt/notebooks -p 8881:8881 qiskit-dev:20.04 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root"
 ```
 
-Again, the link to the Jupyter Notebook web interface can be copied from the command output &mdash; e.g.:
+Again, you can customize the shared folder on your host by replacing the ``${HOME}`` statement, and the URL or the Jupyter Notebook web interface can be copied from the command output &mdash; e.g.:
 
     To access the notebook, open this file in a browser:
         file:///root/.local/share/jupyter/runtime/nbserver-1-open.html

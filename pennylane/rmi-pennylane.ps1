@@ -1,1 +1,1 @@
-docker rmi --force pennylane-dev:20.04
+docker rmi --force pennylane-dev:20.04.2

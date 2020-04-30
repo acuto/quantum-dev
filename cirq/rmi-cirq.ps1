@@ -1,1 +1,1 @@
-docker rmi --force cirq-dev:20.04
+docker rmi --force cirq-dev:20.04.2

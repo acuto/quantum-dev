@@ -6,7 +6,7 @@
 
 The solution meets the following main requirements:
 * **Self-consistency**: all dependencies are fully resolved within an environment deployment
-* **Immutabilty**: all installed components are fully versioned
+* **Immutability**: all installed components are fully versioned
 * **Replicability**: the whole environment can be built ground-up via source code
 
 The project adopts standard "Everything-as-Code" best practices, and delivers the development environment as a Docker container, thus capable to be run on all used platforms (Windows, Mac, Linux). The Docker Hub [``miniconda3``](https://hub.docker.com/r/continuumio/miniconda3/) image is used as the base image.
@@ -14,11 +14,16 @@ The project adopts standard "Everything-as-Code" best practices, and delivers th
 The development environment features the following open-source Quantum Computing frameworks:
 
 * **IBM Qiskit**
-* **Google Cirq and TensowFlow Quantum**
+* **Google Cirq and TensorFlow Quantum**
 * **Xanadu PennyLane**
-* **D-Wave Ocean**
+* **Rigetti Forest SDK**
+* **D-Wave Ocean SDK**
 
 New releases of this project update the version levels for all installed components, preserving consistency of all dependencies.
+
+---
+> **Note**: All included shell scripts are formatted as Bash files (``.sh``) so they can be natively run in a macOS or Linux environment. If using Windows (the most common platform for enterprise workstations) it is sufficient to rename scripts as PowerShell files (``.ps1``) &mdash; the used syntax being invariant. When running on a Windows platform, it is strongly advised to use PowerShell as the native terminal. Another preferred option, if using Windows 10, is to exploit Windows Subsystem for Linux (WSL) as the Docker client, thus relying on Bash as the native terminal syntax. Detailed instructions on how to set this configuration up can be found in ``wsl.md``.
+---
 
 ## Preconditions:
 
@@ -39,9 +44,7 @@ PS> Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V –All
 ```
 
 ---
-> **Note**: Being Windows the most common platform for enterprise workstations, all included shell scripts are formatted as PowerShell files (``.ps1``). In order to execute scripts in a macOS or Linux environment, it is sufficient to rename them as Bash or Zsh files (``.sh``) &mdash; the used syntax being invariant. If using a Windows platform, it is strongly advised to use PowerShell as the terminal.
----
-> **Note**: Docker Desktop relies on a Linux Virtual Machine on Windows and Mac hosts. The size of the VM tends to grow in size with time &mdash; due a faulty estimation of free disk blocks in the Docker/Linux system. If getting low in disk free space, issue a "Reset to factory defaults" on the ``Troubleshoot`` panel in the Docker Desktop application. Also manually deleting the Virtual Disk file when Docker Desktop is not running is considered to be safe &mdash; an empty Virtual Disk is automatically recreated upon Docker Desktop next startup. The location of the Virtual Disk (e.g. ``C:\ProgramData\DockerDesktop\vm-data`` on Windows) can be taken from the ``Settings/Resources`` panel in the Docker Desktop application. Consider that all containers and images will be lost as a result of that operation &mdash; but remember that containers are meant to be volatile by design! If you cannot rely on a local Docker Registry, in order to avoid massive data download when rebuilding images, consider saving your built images (see below "_Saving and loading Docker images_").
+> **Note**: Docker Desktop relies on a Linux Virtual Machine on Windows and Mac hosts. The size of the VM tends to grow in size with time &mdash; due a faulty estimation of free disk blocks in the Docker/Linux system. If getting low in disk free space (and in general to restart with a clean Docker environment) periodically issue a "``Clean/Purge data``" on the ``Troubleshoot`` panel in the Docker Desktop application. Also manually deleting the Virtual Disk file when Docker Desktop is not running is considered to be safe &mdash; an empty Virtual Disk is automatically recreated upon Docker Desktop next startup. The location of the Virtual Disk (e.g. ``C:\ProgramData\DockerDesktop\vm-data`` on Windows) can be taken from the ``Settings/Resources`` panel in the Docker Desktop application. Consider that all containers and images will be lost as a result of that operation &mdash; but remember that containers are meant to be volatile by design! If you cannot rely on a local Docker Registry, in order to avoid massive data download when rebuilding images, consider saving your built images (see below "_Saving and loading Docker images_").
 ---
 
 ## All-In-One setup
@@ -52,13 +55,13 @@ The Docker images can be built through the following command (more easily, by ex
 
 ```sh
 $ cd all-in-one
-$ docker build --no-cache -t quantum-dev:20.04.2 .
+$ docker build --no-cache -t quantum-dev:20.05 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (``run-all`` script):
 
 ```sh
-$ docker run -it --name quantum-dev -v ${HOME}:/opt/notebooks -p 8888:8888 quantum-dev:20.04.2 /bin/bash -c "/opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root"
+$ docker run -it --name quantum-dev -v ${HOME}:/opt/notebooks -p 8888:8888 quantum-dev:20.05 /bin/bash -c "/opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root"
 ```
 
 The above command enables a volume to share Jupyter Notebooks and any other files between the host and the container &mdash; whose mount point is set to ``/opt/notebooks``. The folder shared on the host is by default the home folder: in order to set your own preference, just replace the ``${HOME}`` statement in the script with the full path to your chosen folder. Use native path syntax when running on Windows, Mac or Linux hosts.
@@ -71,30 +74,32 @@ The URL of the Jupyter Notebook web interface can be copied from the command out
         http://383b64483798:8888/?token=cbab2e5b7bacd35da5f413c8738742443fa672c4376864fc
      or http://127.0.0.1:8888/?token=cbab2e5b7bacd35da5f413c8738742443fa672c4376864fc
 
-The Jupyter server in the container can be gracefully shut down by typing ``CTRL-C``. The ``all-in-one`` directory also contains userful scripts to delete the container (``rm-all``) and the image (``rmi-all``).
+The URL containing the ``localhost`` IP address (``127.0.0.1``) is usually working flawlessly on any systems, so it's the advised one to pick in practice.
+
+The Jupyter server in the container can be gracefully shut down by typing ``CTRL-C``. The ``all-in-one`` directory also contains useful scripts to delete the container (``rm-all``) and the image (``rmi-all``).
 
 ## Framework-specific setup
 
-Instead of assembling one container featuring all quantum frameworks as different Conda environments, it is possible to build separate containers for each framework. This proves effective when focusing on a given framework. In the following we shall provide details for building and executing Qiskit &mdash; for the other supported frameworks, simply repeat framwework-specific steps in the proper directory.
+Instead of assembling one container featuring all quantum frameworks as different Conda environments, it is possible to build separate containers for each framework. This proves effective when focusing on a given framework. In the following we shall provide details for building and executing Qiskit &mdash; for the other supported frameworks, simply repeat framework-specific steps in the proper directory.
 
 As a first step, valid for all frameworks, we have to build an intermediate base image &mdash; ``miniconda-quantum``, providing framework-independent operations over the base [``continuumio/miniconda3``](https://hub.docker.com/r/continuumio/miniconda3/) image &mdash; through the following command (more easily, by executing the ``build-miniconda-quantum`` script in the ``miniconda-quantum`` directory):
 
 ```sh
 $ cd miniconda-quantum
-$ docker build --no-cache -t miniconda-quantum:20.04.2 .
+$ docker build --no-cache -t miniconda-quantum:20.05 .
 ```
 
 The Qiskit Docker image can be built through the following command (``build-qiskit`` script in the ``qiskit`` directory):
 
 ```sh
 $ cd qiskit
-$ docker build --no-cache -t qiskit-dev:20.04.2 .
+$ docker build --no-cache -t qiskit-dev:20.05 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (``run-qiskit`` script):
 
 ```sh
-$ docker run -it --name qiskit-dev -v ${HOME}:/opt/notebooks -p 8881:8881 qiskit-dev:20.04.2 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root"
+$ docker run -it --name qiskit-dev -v ${HOME}:/opt/notebooks -p 8881:8881 qiskit-dev:20.05 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root"
 ```
 
 Again, you can customize the shared folder on your host by replacing the ``${HOME}`` statement, and the URL or the Jupyter Notebook web interface can be copied from the command output &mdash; e.g.:
@@ -105,18 +110,36 @@ Again, you can customize the shared folder on your host by replacing the ``${HOM
         http://b48934b3fb17:8881/?token=db5b7503ffad7300b9a7607be4ea67eb0828ff1c19412f96
      or http://127.0.0.1:8881/?token=db5b7503ffad7300b9a7607be4ea67eb0828ff1c19412f96
 
-As for the ``all-in-one`` solution, the ``qiskit`` directory also contains userful scripts to delete the container (``rm-qiskit``) and the image (``rmi-qiskit``).
+As for the ``all-in-one`` solution, the ``qiskit`` directory also contains useful scripts to delete the container (``rm-qiskit``) and the image (``rmi-qiskit``).
+
+## Starting Rigetti Forest QVM
+
+The Rigetti Forest SDK includes PyQuil (the Python library), the Rigetti Quil Compiler (quilc &mdash; which allows compilation and optimization of Quil programs to native gate sets), and the Quantum Virtual Machine (QVM &mdash; the open source implementation of a quantum abstract machine on classical hardware, allowing simulations of Quil programs).
+
+Both quilc and QVM need to be started in the active container to run Quil programs in the simulated environment. In order to do that, open another terminal and type command:
+
+```sh
+$ docker exec -d quantum-dev bash -c "/start-qvm.sh"
+```
+
+if executing the all-in-one solution, or:
+
+```sh
+$ docker exec -d forest-dev bash -c "/start-qvm.sh"
+```
+
+if running the Forest-specific environment. In both cases, the command can also be issued by executing the ``run-qvm`` script in the proper directory, and then the new terminal can be safely closed.
 
 ## Saving and loading Docker images
 
 Some of the used Python packages (e.g. TensorFlow) are huge in size. Therefore, it may be a good idea to save the built Docker images locally &mdash; especially if expecting to work with low-bandwidth or 4G metered connections. Docker provides simple commands to save a tagged image to a tar file &mdash; e.g.:
 
 ```sh
-$ docker save -o quantum-dev-20.04.2.tar quantum-dev:20.04.2
+$ docker save -o quantum-dev-20.05.tar quantum-dev:20.05
 ```
 
 and then reload the image from the tar file:
 
 ```sh
-$ docker load -i quantum-dev-20.04.2.tar
+$ docker load -i quantum-dev-20.05.tar
 ```

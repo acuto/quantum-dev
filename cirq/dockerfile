@@ -1,18 +1,18 @@
-FROM miniconda-quantum:20.04.2
+FROM miniconda-quantum:20.05
 
 LABEL name="cirq-dev"
-LABEL description="Development Environment for Google Cirq and Tensoflow Quantum"
+LABEL description="Development Environment for Google Cirq and Tensorflow Quantum"
 LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
 # Set version levels
 ENV PYTHON_VERSION 3.7.6
 ENV IPYKERNEL_VERSION 5.1.4
-ENV CIRQ_VERSION 0.7.0
-ENV TENSORFLOW_VERSION 2.1.0
-ENV TENSORFLOW_QUANTUM_VERSION 0.2.0
+ENV CIRQ_VERSION 0.8.0
+ENV TENSORFLOW_VERSION 2.2.0
+ENV TENSORFLOW_QUANTUM_VERSION 0.3.0
 
-# Create environment for Google Cirq and Tensoflow Quantum
+# Create environment for Google Cirq and Tensorflow Quantum
 RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
 RUN conda run --name cirq pip install cirq==$CIRQ_VERSION
 RUN conda run --name cirq pip install tensorflow==$TENSORFLOW_VERSION

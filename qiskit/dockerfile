@@ -1,4 +1,4 @@
-FROM miniconda-quantum:20.04.2
+FROM miniconda-quantum:20.05
 
 LABEL name="qiskit-dev"
 LABEL description="Development Environment for IBM Qiskit"
@@ -8,7 +8,7 @@ LABEL vendor="NTT DATA"
 # Set version levels
 ENV PYTHON_VERSION 3.7.6
 ENV IPYKERNEL_VERSION 5.1.4
-ENV QISKIT_VERSION 0.18.3
+ENV QISKIT_VERSION 0.19.1
 
 # Create environment for IBM Qiskit
 RUN conda create --name qiskit --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION

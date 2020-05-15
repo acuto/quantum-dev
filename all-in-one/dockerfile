@@ -11,14 +11,17 @@ ENV CONDA_VERSION 4.8.3
 ENV JUPYTER_VERSION 1.0.0
 ENV PYTHON_VERSION 3.7.6
 ENV IPYKERNEL_VERSION 5.1.4
-ENV QISKIT_VERSION 0.18.3
-ENV CIRQ_VERSION 0.7.0
-ENV TENSORFLOW_VERSION 2.1.0
-ENV TENSORFLOW_QUANTUM_VERSION 0.2.0
+ENV QISKIT_VERSION 0.19.1
+ENV CIRQ_VERSION 0.8.0
+ENV TENSORFLOW_VERSION 2.2.0
+ENV TENSORFLOW_QUANTUM_VERSION 0.3.0
 ENV PENNYLANE_VERSION 0.8.1
+ENV PYQUIL_VERSION 2.19.0
+ENV FOREST_SDK_VERSION 2.20.0
 ENV DWAVE_OCEAN_SDK_VERSION 2.1.1
 
 # Install GCC on Linux
+RUN apt-get update
 RUN apt-get install --yes gcc=$GCC_VERSION
 
 # Update Conda
@@ -35,7 +38,7 @@ RUN conda create --name qiskit --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL
 RUN conda run --name qiskit pip install qiskit==$QISKIT_VERSION
 RUN conda run --name qiskit python -m ipykernel install --user --name qiskit --display-name "Qiskit"
 
-# Create environment for Google Cirq and Tensoflow Quantum
+# Create environment for Google Cirq and Tensorflow Quantum
 RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
 RUN conda run --name cirq pip install cirq==$CIRQ_VERSION
 RUN conda run --name cirq pip install tensorflow==$TENSORFLOW_VERSION
@@ -46,6 +49,20 @@ RUN conda run --name cirq python -m ipykernel install --user --name cirq --displ
 RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
 RUN conda run --name pennylane pip install pennylane==$PENNYLANE_VERSION
 RUN conda run --name pennylane python -m ipykernel install --user --name pennylane --display-name "PennyLane"
+
+# Create environment for Rigetti Forest SDK
+RUN conda create --name pyquil --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name pyquil pip install pyquil==$PYQUIL_VERSION
+RUN conda run --name pyquil python -m ipykernel install --user --name pyquil --display-name "PyQuil"
+
+# Install Rigetti Forest SDK
+RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
+RUN tar -xf forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
+RUN apt-get install --yes liblapack-dev libblas-dev libffi-dev libzmq3-dev
+RUN bash -c "/forest-sdk-${FOREST_SDK_VERSION}-linux-deb/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.run --quiet --accept --noprogress &> /var/log/forest.log"
+RUN rm -Rf /forest-sdk-${FOREST_SDK_VERSION}-linux-deb
+RUN rm /forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
+COPY start-qvm.sh /
 
 # Create environment for D-Wave Ocean
 RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION

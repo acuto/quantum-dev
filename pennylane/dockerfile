@@ -8,7 +8,7 @@ LABEL vendor="NTT DATA"
 # Set version levels
 ENV PYTHON_VERSION 3.7.6
 ENV IPYKERNEL_VERSION 5.1.4
-ENV PENNYLANE_VERSION 0.8.1
+ENV PENNYLANE_VERSION 0.9.0
 
 # Create environment for Xanadu PennyLane
 RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION

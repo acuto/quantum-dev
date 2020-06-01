@@ -1,4 +1,4 @@
-FROM miniconda-quantum:20.05
+FROM miniconda-quantum:20.06
 
 LABEL name="pennylane-dev"
 LABEL description="Development Environment for Xanadu PennyLane"

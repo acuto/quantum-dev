@@ -1,0 +1,13 @@
+app: 
+  name: pennylane
+  imageName: pennylane-dev:20.06
+  imagePullPolicy: IfNotPresent
+  containerCommand: "/opt/conda/envs/pennylane/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8883 --no-browser --allow-root"
+  containerMountPath: /opt/notebooks
+  persistentStorage: 1Gi
+
+service:
+  name: pennylane
+  type: ClusterIP
+  port: 8883
+  targetPort: 8883

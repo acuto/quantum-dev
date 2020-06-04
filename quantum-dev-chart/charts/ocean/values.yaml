@@ -1,0 +1,13 @@
+app: 
+  name: ocean
+  imageName: ocean-dev:20.06
+  imagePullPolicy: IfNotPresent
+  containerCommand: "/opt/conda/envs/ocean/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=9991 --no-browser --allow-root"
+  containerMountPath: /opt/notebooks
+  persistentStorage: 1Gi
+
+service:
+  name: ocean
+  type: ClusterIP
+  port: 9991
+  targetPort: 9991

@@ -1,3 +1,5 @@
+#! /bin/bash 
+
 NAMESPACE=$1
 NAME=$2
 TOKEN=`kubectl logs $NAME-0 -n quantum-dev | grep token | cut -d = -f 2 | head -n 1`

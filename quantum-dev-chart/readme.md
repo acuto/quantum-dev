@@ -10,6 +10,7 @@ The development environment features the following open-source Quantum Computing
 * **Rigetti Forest SDK**
 * **D-Wave Ocean SDK**
 
+Each service is backed by a pod mounting an external volume for persistency.
 
 ## Preconditions:
 

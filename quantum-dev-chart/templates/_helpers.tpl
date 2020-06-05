@@ -9,8 +9,14 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
+  {{- if eq .Values.service.type "NodePort" }}
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
+      nodePort: {{ .Values.service.nodePort }}
+  {{- else }}
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+  {{- end }}
   selector:
     app: {{ .Values.app.name }}
 {{ end }}

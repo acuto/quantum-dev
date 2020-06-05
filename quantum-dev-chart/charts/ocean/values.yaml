@@ -8,6 +8,7 @@ app:
 
 service:
   name: ocean
-  type: ClusterIP
+  type: NodePort
   port: 9991
   targetPort: 9991
+  nodePort: 30991

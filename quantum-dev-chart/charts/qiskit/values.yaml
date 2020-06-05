@@ -8,6 +8,7 @@ app:
 
 service:
   name: qiskit
-  type: ClusterIP
+  type: NodePort
   port: 8881
   targetPort: 8881
+  nodePort: 30881

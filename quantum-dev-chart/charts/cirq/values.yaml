@@ -8,6 +8,7 @@ app:
 
 service:
   name: cirq
-  type: ClusterIP
+  type: NodePort
   port: 8882
   targetPort: 8882
+  nodePort: 30882

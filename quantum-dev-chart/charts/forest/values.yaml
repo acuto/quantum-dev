@@ -8,6 +8,7 @@ app:
 
 service:
   name: forest
-  type: ClusterIP
+  type: NodePort
   port: 8887
   targetPort: 8887
+  nodePort: 30887

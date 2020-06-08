@@ -38,6 +38,6 @@ The frameworks are exposed outside the cluster with NodePort services. In a loca
 
 In a private cluster environment, you could do port forwarding of these services before reaching them or, if the cluster is public, simply change localhost with your domain name.
 
-Once there, you can type the password. In order to change the passwords:
+The services are protected by a password. In order to change the default passwords:
 - Edit the files at [secrets/files](secrets/files)
-- Deploy to k8s by launching the convenience script `gen-secrets.sh`
+- Deploy to k8s by launching the convenience script `gen-secrets.sh` [here](secrets/gen-secrets.sh)

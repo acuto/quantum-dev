@@ -28,14 +28,14 @@ $ cd quantum-dev
 $ helm install quantum-dev ./quantum-dev-chart
 ```
 
-Once the deploy is complete, you can access the Jupyter Notebook Web Interface with the convenience script `quantum-dev.sh`
+The frameworks are exposed outside the cluster with NodePort services. In a local setup environment correctly supporting NodePort services ( k8s on docker-desktop for instance ), you can easily reach them at the following URLs:
 
-```sh
-$ ./quantum-dev.sh quantum-dev qiskit
-```
+* **IBM Qiskit** http://localhost:30881 
+* **Google Cirq and TensorFlow Quantum** http://localhost:30882
+* **Xanadu PennyLane** http://localhost:30883
+* **Rigetti Forest SDK** http://localhost:30887
+* **D-Wave Ocean SDK** http://localhost:30991
 
-It accepts as parameter the k8s namespace and the quantum computing framework you need.
-`quantum-dev` is the namespace choosen as default but it can be changed on the values.yaml file.
-
-The script prints to screen the URL of the Jupyter Notebook web interface of the framework and creates the necessary port forwarding.
-In future releases, an Ingress service will expose all the services without need of port forwarding
+Once there, you can type the password. In order to change the passwords:
+- Edit the files at [secrets/files](secrets/files)
+- Deploy to k8s by launching the convenience script `gen-secrets.sh`

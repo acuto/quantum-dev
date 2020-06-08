@@ -36,6 +36,8 @@ The frameworks are exposed outside the cluster with NodePort services. In a loca
 * **Rigetti Forest SDK** http://localhost:30887
 * **D-Wave Ocean SDK** http://localhost:30991
 
+In a private cluster environment, you could do port forwarding of these services before reaching them or, if the cluster is public, simply change localhost with your domain name.
+
 Once there, you can type the password. In order to change the passwords:
 - Edit the files at [secrets/files](secrets/files)
 - Deploy to k8s by launching the convenience script `gen-secrets.sh`

@@ -2,7 +2,7 @@ app:
   name: qiskit
   imageName: qiskit-dev:20.06
   imagePullPolicy: IfNotPresent
-  containerCommand: "/opt/conda/envs/qiskit/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root"
+  containerCommand: "/opt/conda/envs/qiskit/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /opt/notebooks
   persistentStorage: 1Gi
 
@@ -12,3 +12,4 @@ service:
   port: 8881
   targetPort: 8881
   nodePort: 30881
+  password: jupyter-qiskit-credentials

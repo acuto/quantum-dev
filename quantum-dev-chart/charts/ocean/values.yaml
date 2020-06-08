@@ -2,7 +2,7 @@ app:
   name: ocean
   imageName: ocean-dev:20.06
   imagePullPolicy: IfNotPresent
-  containerCommand: "/opt/conda/envs/ocean/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=9991 --no-browser --allow-root"
+  containerCommand: "/opt/conda/envs/ocean/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=9991 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /opt/notebooks
   persistentStorage: 1Gi
 
@@ -12,3 +12,4 @@ service:
   port: 9991
   targetPort: 9991
   nodePort: 30991
+  password: jupyter-ocean-credentials

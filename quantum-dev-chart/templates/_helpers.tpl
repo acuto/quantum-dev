@@ -52,6 +52,12 @@ spec:
         - bash
         - -c
         - {{ .Values.app.containerCommand | quote }}
+        env:
+          - name: JUPYTER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: jupyter
+                key: {{ .Values.service.password }}
         volumeMounts:
           - name: {{ .Values.app.name }}-notebooks
             mountPath: {{ .Values.app.containerMountPath }}

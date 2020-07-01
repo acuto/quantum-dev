@@ -25,6 +25,7 @@ All the frameworks are naturally segregated by the pod structure.
 
 ```sh
 $ cd quantum-dev
+$ ./gen-secrets.sh
 $ helm install quantum-dev ./quantum-dev-chart
 ```
 

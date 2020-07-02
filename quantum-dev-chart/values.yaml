@@ -1,0 +1,3 @@
+global:
+  namespace: quantum-dev
+  terminationGracePeriodSeconds: 180

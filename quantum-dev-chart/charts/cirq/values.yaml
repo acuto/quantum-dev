@@ -1,0 +1,15 @@
+app: 
+  name: cirq
+  imageName: cirq-dev:20.06
+  imagePullPolicy: IfNotPresent
+  containerCommand: "/opt/conda/envs/cirq/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8882 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
+  containerMountPath: /opt/notebooks
+  persistentStorage: 1Gi
+
+service:
+  name: cirq
+  type: NodePort
+  port: 8882
+  targetPort: 8882
+  nodePort: 30882
+  password: jupyter-cirq-credentials

@@ -9,7 +9,7 @@ If you're running Windows 10 2004 or newer, it is highly recommended to take adv
 Detailed instructions on how to install WSL 2 and integrate with Docker Desktop can be found on [Microsoft](https://docs.microsoft.com/en-us/windows/wsl/) and [Docker](https://docs.docker.com/docker-for-windows/wsl/) documentation.
 
 ---
-> **Note**: Docker Desktop relies on a Linux Virtual Machine on Windows and Mac hosts. The size of the VM tends to grow in size with time &mdash; due a faulty estimation of free disk blocks in the Docker/Linux system. If getting low in disk free space (and in general to restart with a clean Docker environment) periodically issue a "``Clean/Purge data``" on the ``Troubleshoot`` panel in the Docker Desktop application. Consider that all containers and images will be lost as a result of that operation &mdash; but remember that containers are meant to be volatile by design! If you cannot rely on a local Docker Registry, in order to avoid massive data download when rebuilding images, consider saving your built images (see below "_Saving and loading Docker images_").
+> **Note**: Docker Desktop relies on a Linux Virtual Machine on Windows and Mac hosts. The size of the VM tends to grow in size with time &mdash; due a faulty estimation of free disk blocks in the Docker/Linux system. If getting low in disk free space (and in general to restart with a clean Docker environment) periodically issue a "`Clean/Purge data`" on the `Troubleshoot` panel in the Docker Desktop application. Consider that all containers and images will be lost as a result of that operation &mdash; but remember that containers are meant to be volatile by design! If you cannot rely on a local Docker Registry, in order to avoid massive data download when rebuilding images, consider saving your built images (see below "_Saving and loading Docker images_").
 ---
 
 ## Installing the Docker client on WSL 1
@@ -79,13 +79,13 @@ When that finishes, you'll end up having everything installed in Linux (restarti
 
     Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
 
-You need to tell the Docker client where the Docker host is, and you can do that by using the ``-H`` option as follows:
+You need to tell the Docker client where the Docker host is, and you can do that by using the `-H` option as follows:
 
 ```sh
 $ docker -H localhost:2375 images
 ```
 
-If you don't want to type the host every time, you can set up and environment variable called ``DOCKER_HOST`` to ``localhost:2375``, and execute this instruction automatically at shell creation through the following command:
+If you don't want to type the host every time, you can set up and environment variable called `DOCKER_HOST` to `localhost:2375`, and execute this instruction automatically at shell creation through the following command:
 
 ```sh
 # Allow Docker Client on WSL to access Docker Host running on Windows
@@ -93,12 +93,12 @@ echo "export DOCKER_HOST=tcp://localhost:2375" >> ~/.bashrc && source ~/.bashrc
 ```
 
 ---
-> **Note**: Make sure you expose the Docker daemon port to ``localhost`` so that the Docker Client running on WSL can access it, otherwise this won't work! This is done by checking the "``Expose daemon on tcp://localhost:2375 without TLS``" option in the Docker Desktop settings panel.
+> **Note**: Make sure you expose the Docker daemon port to `localhost` so that the Docker Client running on WSL can access it, otherwise this won't work! This is done by checking the "`Expose daemon on tcp://localhost:2375 without TLS`" option in the Docker Desktop settings panel.
 ---
 
 ## Fixing the WSL mounts
 
-The last thing we need to do is set things up so that volume mounts work. When using WSL, Docker for Windows expects you to supply your volume paths in a format that matches this: ``/c/Users/<USER>/Documents/Jupyter``. Yet, WSL doesn’t work like that. Instead, it uses the ``/mnt/c/Users/<USER>/Documents/Jupyter`` format.
+The last thing we need to do is set things up so that volume mounts work. When using WSL, Docker for Windows expects you to supply your volume paths in a format that matches this: `/c/Users/<USER>/Documents/Jupyter`. Yet, WSL doesn’t work like that. Instead, it uses the `/mnt/c/Users/<USER>/Documents/Jupyter` format.
 
 Assuming you're running Windows 10 18.03+, open a WSL terminal to create and modify the new WSL configuration file (again, starting a new WSL session is required to apply changes):
 
@@ -113,6 +113,6 @@ root=/
 options="metadata,umask=22,fmask=11"
 ```
 
-We need to set ``root=/`` because this will make your drives mounted at ``/c`` or ``/e`` instead of ``/mnt/c`` or ``/mnt/e``.
+We need to set `root=/` because this will make your drives mounted at `/c` or `/e` instead of `/mnt/c` or `/mnt/e`.
 
-The ``options = "metadata"`` line is not necessary but it will fix folder and file permissions on WSL mounts so that everything isn’t 777 all the time within the WSL mounts &mdash; so it's highly recommended.
+The `options = "metadata"` line is not necessary but it will fix folder and file permissions on WSL mounts so that everything isn’t 777 all the time within the WSL mounts &mdash; so it's highly recommended.

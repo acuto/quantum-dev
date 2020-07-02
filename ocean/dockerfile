@@ -1,4 +1,4 @@
-FROM miniconda-quantum:20.06
+FROM miniconda-quantum:20.07
 
 LABEL name="ocean-dev"
 LABEL description="Development Environment for D-Wave Ocean"
@@ -8,7 +8,7 @@ LABEL vendor="NTT DATA"
 # Set version levels
 ENV PYTHON_VERSION 3.7.6
 ENV IPYKERNEL_VERSION 5.1.4
-ENV DWAVE_OCEAN_SDK_VERSION 2.1.1
+ENV DWAVE_OCEAN_SDK_VERSION 2.2.0
 
 # Create environment for D-Wave Ocean
 RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build --no-cache -t ocean-dev:20.06 .
+docker build --no-cache -t ocean-dev:20.07 .

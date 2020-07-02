@@ -38,13 +38,13 @@ The Docker images can be built through the following command (more easily, by ex
 
 ```sh
 $ cd all-in-one
-$ docker build --no-cache -t quantum-dev:20.06 .
+$ docker build --no-cache -t quantum-dev:20.07 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (``run-all`` script):
 
 ```sh
-$ docker run -it --name quantum-dev -v ${HOME}:/opt/notebooks -p 8888:8888 quantum-dev:20.06 /bin/bash -c "/opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root"
+$ docker run -it --name quantum-dev -v ${HOME}:/opt/notebooks -p 8888:8888 quantum-dev:20.07 /bin/bash -c "/opt/conda/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root"
 ```
 
 The above command enables a volume to share Jupyter Notebooks and any other files between the host and the container &mdash; whose mount point is set to ``/opt/notebooks``. The folder shared on the host is by default the home folder: in order to set your own preference, just replace the ``${HOME}`` statement in the script with the full path to your chosen folder. Use native path syntax when running on Windows, Mac or Linux hosts.
@@ -69,20 +69,20 @@ As a first step, valid for all frameworks, we have to build an intermediate base
 
 ```sh
 $ cd miniconda-quantum
-$ docker build --no-cache -t miniconda-quantum:20.06 .
+$ docker build --no-cache -t miniconda-quantum:20.07 .
 ```
 
 The Qiskit Docker image can be built through the following command (``build-qiskit`` script in the ``qiskit`` directory):
 
 ```sh
 $ cd qiskit
-$ docker build --no-cache -t qiskit-dev:20.06 .
+$ docker build --no-cache -t qiskit-dev:20.07 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (``run-qiskit`` script):
 
 ```sh
-$ docker run -it --name qiskit-dev -v ${HOME}:/opt/notebooks -p 8881:8881 qiskit-dev:20.06 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root"
+$ docker run -it --name qiskit-dev -v ${HOME}:/opt/notebooks -p 8881:8881 qiskit-dev:20.07 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root"
 ```
 
 Again, you can customize the shared folder on your host by replacing the ``${HOME}`` statement, and the URL or the Jupyter Notebook web interface can be copied from the command output &mdash; e.g.:
@@ -118,11 +118,11 @@ if running the Forest-specific environment. In both cases, the command can also 
 Some of the used Python packages (e.g. TensorFlow) are huge in size. Therefore, it may be a good idea to save the built Docker images locally &mdash; especially if expecting to work with low-bandwidth or 4G metered connections. Docker provides simple commands to save a tagged image to a tar file &mdash; e.g.:
 
 ```sh
-$ docker save -o quantum-dev-20.06.tar quantum-dev:20.06
+$ docker save -o quantum-dev-20.07.tar quantum-dev:20.07
 ```
 
 and then reload the image from the tar file:
 
 ```sh
-$ docker load -i quantum-dev-20.06.tar
+$ docker load -i quantum-dev-20.07.tar
 ```

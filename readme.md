@@ -42,7 +42,7 @@ The simplest way to set up the development environment in a private or public cl
 ```sh
 $ cd quantum-dev
 $ ./build-k8s.sh
-$ ./run-k8s.sh
+$ ./install-k8s.sh
 ```
 
 The frameworks are exposed outside the cluster with `NodePort` services. In a local setup environment correctly supporting `NodePort` services (e.g. Kubernetes on Docker Desktop) you can easily reach them at the following URLs:

@@ -1,0 +1,34 @@
+FROM miniconda-quantum:20.10
+
+LABEL name="myqlm-dev"
+LABEL description="Development Environment for Atos myQLM"
+LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
+LABEL vendor="NTT DATA"
+
+# Set version levels
+ENV PYTHON_MYQLM_VERSION 3.6.12
+ENV IPYKERNEL_VERSION 5.3.4
+ENV MYQLM_VERSION 1.1.6
+
+# Install ImageMagick for Wand
+RUN apt-get update
+RUN apt-get install --yes libmagickwand-dev
+
+# Create environment for Atos myQLM
+RUN conda create --name myqlm --yes python=$PYTHON_MYQLM_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name myqlm pip install --use-feature=2020-resolver myqlm==$MYQLM_VERSION
+RUN conda run --name myqlm pip install --use-feature=2020-resolver myqlm-interop[all]==$MYQLM_VERSION
+RUN conda run --name myqlm python -m qat.magics.install
+RUN conda run --name myqlm python -m ipykernel install --user --name myqlm --display-name "myQLM"
+
+# Clean Conda installation
+RUN conda clean --yes --all
+
+# Expose port for Jupyter Lab web access
+EXPOSE 9992
+
+# Set working directory
+WORKDIR /opt/notebooks
+
+# Define default command to start bash
+CMD ["bash"]

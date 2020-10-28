@@ -79,6 +79,16 @@ RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_
 RUN conda run --name ocean pip install --use-feature=2020-resolver dwave-ocean-sdk==$DWAVE_OCEAN_SDK_VERSION
 RUN conda run --name ocean python -m ipykernel install --user --name ocean --display-name "Ocean"
 
+# Install ImageMagick for Wand
+RUN apt-get install --yes libmagickwand-dev
+
+# Create environment for Atos myQLM
+RUN conda create --name myqlm --yes python=$PYTHON_MYQLM_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name myqlm pip install --use-feature=2020-resolver myqlm==$MYQLM_VERSION
+RUN conda run --name myqlm pip install --use-feature=2020-resolver myqlm-interop[all]==$MYQLM_VERSION
+RUN conda run --name myqlm python -m qat.magics.install
+RUN conda run --name myqlm python -m ipykernel install --user --name myqlm --display-name "myQLM"
+
 # Clean Conda installation
 RUN conda clean --yes --all
 

@@ -1,0 +1,28 @@
+FROM miniconda-quantum:20.10
+
+LABEL name="strawberryfields-dev"
+LABEL description="Development Environment for Xanadu Strawberry Fields"
+LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
+LABEL vendor="NTT DATA"
+
+# Set version levels
+ENV PYTHON_VERSION 3.7.9
+ENV IPYKERNEL_VERSION 5.3.4
+ENV STRAWBERRYFIELDS_VERSION 0.16.0
+
+# Create environment for Xanadu Strawberry Fields
+RUN conda create --name strawberryfields --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name strawberryfields pip install --use-feature=2020-resolver strawberryfields==$STRAWBERRYFIELDS_VERSION
+RUN conda run --name strawberryfields python -m ipykernel install --user --name strawberryfields --display-name "Strawberry Fields"
+
+# Clean Conda installation
+RUN conda clean --yes --all
+
+# Expose port for Jupyter Lab web access
+EXPOSE 8884
+
+# Set working directory
+WORKDIR /opt/notebooks
+
+# Define default command to start bash
+CMD ["bash"]

@@ -55,6 +55,11 @@ RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKER
 RUN conda run --name pennylane pip install --use-feature=2020-resolver pennylane==$PENNYLANE_VERSION
 RUN conda run --name pennylane python -m ipykernel install --user --name pennylane --display-name "PennyLane"
 
+# Create environment for Xanadu Strawberry Fields
+RUN conda create --name strawberryfields --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
+RUN conda run --name strawberryfields pip install --use-feature=2020-resolver strawberryfields==$STRAWBERRYFIELDS_VERSION
+RUN conda run --name strawberryfields python -m ipykernel install --user --name strawberryfields --display-name "Strawberry Fields"
+
 # Create environment for Rigetti Forest SDK
 RUN conda create --name pyquil --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
 RUN conda run --name pyquil pip install --use-feature=2020-resolver pyquil==$PYQUIL_VERSION

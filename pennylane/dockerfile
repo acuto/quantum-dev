@@ -12,7 +12,7 @@ ENV PENNYLANE_VERSION 0.10.0
 
 # Create environment for Xanadu PennyLane
 RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name pennylane pip install pennylane==$PENNYLANE_VERSION
+RUN conda run --name pennylane pip install --use-feature=2020-resolver pennylane==$PENNYLANE_VERSION
 RUN conda run --name pennylane python -m ipykernel install --user --name pennylane --display-name "PennyLane"
 
 # Clean Conda installation

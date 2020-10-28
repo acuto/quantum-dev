@@ -12,7 +12,7 @@ ENV DWAVE_OCEAN_SDK_VERSION 2.2.0
 
 # Create environment for D-Wave Ocean
 RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name ocean pip install dwave-ocean-sdk==$DWAVE_OCEAN_SDK_VERSION
+RUN conda run --name ocean pip install --use-feature=2020-resolver dwave-ocean-sdk==$DWAVE_OCEAN_SDK_VERSION
 RUN conda run --name ocean python -m ipykernel install --user --name ocean --display-name "Ocean"
 
 # Clean Conda installation

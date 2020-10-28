@@ -35,24 +35,24 @@ RUN mkdir /opt/notebooks && cd /opt/notebooks
 
 # Create environment for IBM Qiskit
 RUN conda create --name qiskit --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name qiskit pip install qiskit==$QISKIT_VERSION
+RUN conda run --name qiskit pip install --use-feature=2020-resolver qiskit==$QISKIT_VERSION
 RUN conda run --name qiskit python -m ipykernel install --user --name qiskit --display-name "Qiskit"
 
 # Create environment for Google Cirq and Tensorflow Quantum
 RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name cirq pip install cirq==$CIRQ_VERSION
-RUN conda run --name cirq pip install tensorflow==$TENSORFLOW_VERSION
-RUN conda run --name cirq pip install tensorflow-quantum==$TENSORFLOW_QUANTUM_VERSION
+RUN conda run --name cirq pip install --use-feature=2020-resolver cirq==$CIRQ_VERSION
+RUN conda run --name cirq pip install --use-feature=2020-resolver tensorflow==$TENSORFLOW_VERSION
+RUN conda run --name cirq pip install --use-feature=2020-resolver tensorflow-quantum==$TENSORFLOW_QUANTUM_VERSION
 RUN conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
 
 # Create environment for Xanadu PennyLane
 RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name pennylane pip install pennylane==$PENNYLANE_VERSION
+RUN conda run --name pennylane pip install --use-feature=2020-resolver pennylane==$PENNYLANE_VERSION
 RUN conda run --name pennylane python -m ipykernel install --user --name pennylane --display-name "PennyLane"
 
 # Create environment for Rigetti Forest SDK
 RUN conda create --name pyquil --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name pyquil pip install pyquil==$PYQUIL_VERSION
+RUN conda run --name pyquil pip install --use-feature=2020-resolver pyquil==$PYQUIL_VERSION
 RUN conda run --name pyquil python -m ipykernel install --user --name pyquil --display-name "PyQuil"
 
 # Install Rigetti Forest SDK
@@ -66,7 +66,7 @@ COPY start-qvm.sh /
 
 # Create environment for D-Wave Ocean
 RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name ocean pip install dwave-ocean-sdk==$DWAVE_OCEAN_SDK_VERSION
+RUN conda run --name ocean pip install --use-feature=2020-resolver dwave-ocean-sdk==$DWAVE_OCEAN_SDK_VERSION
 RUN conda run --name ocean python -m ipykernel install --user --name ocean --display-name "Ocean"
 
 # Clean Conda installation

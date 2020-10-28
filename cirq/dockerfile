@@ -14,9 +14,9 @@ ENV TENSORFLOW_QUANTUM_VERSION 0.3.0
 
 # Create environment for Google Cirq and Tensorflow Quantum
 RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name cirq pip install cirq==$CIRQ_VERSION
-RUN conda run --name cirq pip install tensorflow==$TENSORFLOW_VERSION
-RUN conda run --name cirq pip install tensorflow-quantum==$TENSORFLOW_QUANTUM_VERSION
+RUN conda run --name cirq pip install --use-feature=2020-resolver cirq==$CIRQ_VERSION
+RUN conda run --name cirq pip install --use-feature=2020-resolver tensorflow==$TENSORFLOW_VERSION
+RUN conda run --name cirq pip install --use-feature=2020-resolver tensorflow-quantum==$TENSORFLOW_QUANTUM_VERSION
 RUN conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
 
 # Clean Conda installation

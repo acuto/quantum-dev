@@ -1,8 +1,8 @@
 app: 
   name: pennylane
-  imageName: pennylane-dev:20.07
+  imageName: pennylane-dev:20.10
   imagePullPolicy: IfNotPresent
-  containerCommand: "/opt/conda/envs/pennylane/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8883 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
+  containerCommand: "/opt/conda/envs/pennylane/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8883 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /opt/notebooks
   persistentStorage: 1Gi
 

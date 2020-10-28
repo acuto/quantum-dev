@@ -1,8 +1,8 @@
 app: 
   name: forest
-  imageName: forest-dev:20.07
+  imageName: forest-dev:20.10
   imagePullPolicy: IfNotPresent
-  containerCommand: "/opt/conda/envs/pyquil/bin/jupyter notebook --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8887 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
+  containerCommand: "/opt/conda/envs/pyquil/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8887 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /opt/notebooks
   persistentStorage: 1Gi
 

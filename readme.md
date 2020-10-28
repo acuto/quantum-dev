@@ -70,6 +70,12 @@ Out [2]: 'sha1:fc0d38552a1a:a13dd5d7673ad3ec727d3e1749abefe0ba570c5a'
 ```
 ---
 
+The Kubernetes deployment can be uninstalled by launching the script:
+
+```sh
+$ ./uninstall-k8s.sh
+```
+
 ## All-In-One Docker setup
 
 The simplest way to run the development environment on a workstation is to build the "All-In-One" solution. This creates one Docker container for all frameworks, each of them being accessible through the Jupyter Lab web interface. In order to avoid Python dependency inconsistencies, all frameworks are installed in private and segregated Conda environments.

@@ -6,10 +6,10 @@ LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
 # Set version levels
-ENV PYTHON_VERSION 3.7.6
-ENV IPYKERNEL_VERSION 5.1.4
-ENV PYQUIL_VERSION 2.20.0
-ENV FOREST_SDK_VERSION 2.20.0
+ENV PYTHON_VERSION 3.7.9
+ENV IPYKERNEL_VERSION 5.3.4
+ENV PYQUIL_VERSION 2.23.2
+ENV FOREST_SDK_VERSION 2.22.0
 
 # Create environment for Rigetti Forest SDK
 RUN conda create --name pyquil --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
@@ -28,7 +28,7 @@ COPY start-qvm.sh /
 # Clean Conda installation
 RUN conda clean --yes --all
 
-# Expose port for Jupyter Notebook web access
+# Expose port for Jupyter Lab web access
 EXPOSE 8887
 
 # Set working directory

@@ -6,9 +6,9 @@ LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
 # Set version levels
-ENV PYTHON_VERSION 3.7.6
-ENV IPYKERNEL_VERSION 5.1.4
-ENV DWAVE_OCEAN_SDK_VERSION 2.2.0
+ENV PYTHON_VERSION 3.7.9
+ENV IPYKERNEL_VERSION 5.3.4
+ENV DWAVE_OCEAN_SDK_VERSION 3.1.1
 
 # Create environment for D-Wave Ocean
 RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
@@ -18,7 +18,7 @@ RUN conda run --name ocean python -m ipykernel install --user --name ocean --dis
 # Clean Conda installation
 RUN conda clean --yes --all
 
-# Expose port for Jupyter Notebook web access
+# Expose port for Jupyter Lab web access
 EXPOSE 9991
 
 # Set working directory

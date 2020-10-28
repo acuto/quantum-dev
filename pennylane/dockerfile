@@ -6,9 +6,9 @@ LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
 # Set version levels
-ENV PYTHON_VERSION 3.7.6
-ENV IPYKERNEL_VERSION 5.1.4
-ENV PENNYLANE_VERSION 0.10.0
+ENV PYTHON_VERSION 3.7.9
+ENV IPYKERNEL_VERSION 5.3.4
+ENV PENNYLANE_VERSION 0.12.0
 
 # Create environment for Xanadu PennyLane
 RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
@@ -18,7 +18,7 @@ RUN conda run --name pennylane python -m ipykernel install --user --name pennyla
 # Clean Conda installation
 RUN conda clean --yes --all
 
-# Expose port for Jupyter Notebook web access
+# Expose port for Jupyter Lab web access
 EXPOSE 8883
 
 # Set working directory

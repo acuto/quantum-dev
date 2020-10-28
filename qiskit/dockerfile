@@ -6,9 +6,9 @@ LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
 # Set version levels
-ENV PYTHON_VERSION 3.7.6
-ENV IPYKERNEL_VERSION 5.1.4
-ENV QISKIT_VERSION 0.19.6
+ENV PYTHON_VERSION 3.7.9
+ENV IPYKERNEL_VERSION 5.3.4
+ENV QISKIT_VERSION 0.23.0
 
 # Create environment for IBM Qiskit
 RUN conda create --name qiskit --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
@@ -18,7 +18,7 @@ RUN conda run --name qiskit python -m ipykernel install --user --name qiskit --d
 # Clean Conda installation
 RUN conda clean --yes --all
 
-# Expose port for Jupyter Notebook web access
+# Expose port for Jupyter Lab web access
 EXPOSE 8881
 
 # Set working directory

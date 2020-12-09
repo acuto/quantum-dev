@@ -84,26 +84,20 @@ The Docker images can be built through the following command (more easily, by ex
 
 ```sh
 $ cd all-in-one
-$ docker build --no-cache -t quantum-dev:20.10 .
+$ docker build --no-cache -t quantum-dev:20.12 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-all.sh` script):
 
 ```sh
-$ docker run -it --name quantum-dev -v ${HOME}:/opt/notebooks -p 8888:8888 quantum-dev:20.10 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root"
+$ docker run -it --name quantum-dev -v ${HOME}:/opt/notebooks -p 8888:8888 quantum-dev:20.12 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
 ```
 
 The above command enables a volume to share Jupyter Notebooks and any other files between the host and the container &mdash; whose mount point is set to `/opt/notebooks`. The folder shared on the host is by default the home folder: in order to set your own preference, just replace the `${HOME}` statement in the script with the full path to your chosen folder. Use native path syntax when running on Windows, Mac or Linux hosts.
 
-The URL of the Jupyter Notebook web interface can be copied from the command output &mdash; e.g.:
+The resulting URL of the Jupyter Notebook web interface is:
 
-    To access the notebook, open this file in a browser:
-        file:///root/.local/share/jupyter/runtime/nbserver-1-open.html
-    Or copy and paste one of these URLs:
-        http://383b64483798:8888/?token=cbab2e5b7bacd35da5f413c8738742443fa672c4376864fc
-     or http://127.0.0.1:8888/?token=cbab2e5b7bacd35da5f413c8738742443fa672c4376864fc
-
-The URL containing the `localhost` IP address (`127.0.0.1`) is usually working flawlessly on any systems, so it's the advised one to pick in practice.
+    http://127.0.0.1:8888/?token=quantum-dev
 
 The Jupyter server in the container can be gracefully shut down by typing `CTRL-C`. The `all-in-one` directory also contains useful scripts to delete the container (`rm-all.sh`) and the image (`rmi-all.sh`).
 
@@ -115,29 +109,25 @@ As a first step, valid for all frameworks, we have to build an intermediate base
 
 ```sh
 $ cd miniconda-quantum
-$ docker build --no-cache -t miniconda-quantum:20.10 .
+$ docker build --no-cache -t miniconda-quantum:20.12 .
 ```
 
 The Qiskit Docker image can be built through the following command (`build-qiskit.sh` script in the `qiskit` directory):
 
 ```sh
 $ cd qiskit
-$ docker build --no-cache -t qiskit-dev:20.10 .
+$ docker build --no-cache -t qiskit-dev:20.12 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-qiskit.sh` script):
 
 ```sh
-$ docker run -it --name qiskit-dev -v ${HOME}:/opt/notebooks -p 8881:8881 qiskit-dev:20.10 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root"
+$ docker run -it --name qiskit-dev -v ${HOME}:/opt/notebooks -p 8881:8881 qiskit-dev:20.12 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.token='quantum-dev-qiskit'"
 ```
 
-Again, you can customize the shared folder on your host by replacing the `${HOME}` statement, and the URL or the Jupyter Lab web interface can be copied from the command output &mdash; e.g.:
+Again, you can customize the shared folder on your host by replacing the `${HOME}` statement, and the URL or the Jupyter Lab web interface is:
 
-    To access the notebook, open this file in a browser:
-        file:///root/.local/share/jupyter/runtime/nbserver-1-open.html
-    Or copy and paste one of these URLs:
-        http://b48934b3fb17:8881/?token=db5b7503ffad7300b9a7607be4ea67eb0828ff1c19412f96
-     or http://127.0.0.1:8881/?token=db5b7503ffad7300b9a7607be4ea67eb0828ff1c19412f96
+    http://127.0.0.1:8881/?token=quantum-dev-qiskit
 
 As for the `all-in-one` solution, the `qiskit` directory also contains useful scripts to delete the container (`rm-qiskit.sh`) and the image (`rmi-qiskit.sh`).
 
@@ -159,16 +149,51 @@ $ docker exec -d forest-dev bash -c "/start-qvm.sh"
 
 if running the Forest-specific environment. In both cases, the command can also be issued by executing the `run-qvm.sh` script in the proper directory, and then the new terminal can be safely closed.
 
+## Integration with Visual Studio Code
+
+[`Visual Studio Code Remote Development`](https://code.visualstudio.com/docs/remote/remote-overview) allows you to use a container as a full-featured development environment. The benefit for Quantum-Dev lies in using its immutable, ready-to-use, and possibly remoted workspaces as attached to a powerful and general-purpose Integrated Development Environment (IDE).
+
+VS Code provides two methods to achieve that. The first consists in [`Attaching to a running container`](https://code.visualstudio.com/docs/remote/attach-container). To accompish this, first start the chosen container as normally done when accessing through the Jupyter Lab web interface. From the VS Code Command Palette (`F1`) select command `"Remote-Containers: Attach to Running Container"` and choose the running container from the drop-down list. This opens a new VS Code instance attached to the container. Note that VS Code will inject its server-side components into the container, and you will also need to install the relevant VS Code extensions within the container as well, e.g.
+
+* `ms-python.python`
+* `ms-toolsai.jupyter` (automatically installed by Python)
+
+and, when using Qiskit,
+
+* `qiskit.qiskit-vscode`
+
+All such operations are necessary only when attaching to the container for the first time, since VS Code will keep track of them at a later access. When opening your notebooks, also please mind to select the right Python Kernel for their execution.
+
+A second method to attach to a container as your workspace is to use the VS Code native features for [`Development Containers`](https://code.visualstudio.com/docs/remote/create-dev-container). Though allowing for less flexibility, the advantage is that the above manual operations are automated, if VS Code is the only IDE you are going to use. All you need to do is to copy the right `.devcontainer` folder in your local workspace (the templates are available in the `vscode` directory of this project). As it can be seen, the `devcontainer.json` file contains all configurations to allow VS Code to run the relevant Docker image properly, e.g.
+
+```json
+{
+  "name": "qiskit-dev",
+  "image": "qiskit-dev:20.12",
+  "runArgs": ["-it"],
+  "forwardPorts": [8881],
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter",
+    "qiskit.qiskit-vscode"
+  ],
+  "workspaceFolder": "/opt/notebooks",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/opt/notebooks,type=bind,consistency=cached"
+}
+```
+
+Simply opening with VS Code the folder containing the proper `.devcontainer/devcontainer.json` will start the container, configure it at attach it to the VS Code IDE.
+
 ## Saving and loading Docker images
 
 Some of the used Python packages (e.g. TensorFlow) are huge in size. Therefore, it may be a good idea to save the built Docker images locally &mdash; especially if expecting to work with low-bandwidth or 4G metered connections. Docker provides simple commands to save a tagged image to a tar file &mdash; e.g.:
 
 ```sh
-$ docker save -o quantum-dev-20.10.tar quantum-dev:20.10
+$ docker save -o quantum-dev-20.12.tar quantum-dev:20.12
 ```
 
 and then reload the image from the tar file:
 
 ```sh
-$ docker load -i quantum-dev-20.10.tar
+$ docker load -i quantum-dev-20.12.tar
 ```

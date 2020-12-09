@@ -1,0 +1,13 @@
+{
+  "name": "quantum-dev",
+  "image": "quantum-dev:20.12",
+  "runArgs": ["-it"],
+  "forwardPorts": [8888],
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter",
+    "qiskit.qiskit-vscode"
+  ],
+  "workspaceFolder": "/opt/notebooks",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/opt/notebooks,type=bind,consistency=cached"
+}

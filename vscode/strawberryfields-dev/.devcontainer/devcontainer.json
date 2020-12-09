@@ -1,0 +1,12 @@
+{
+  "name": "strawberryfields-dev",
+  "image": "strawberryfields-dev:20.12",
+  "runArgs": ["-it"],
+  "forwardPorts": [8884],
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter"
+  ],
+  "workspaceFolder": "/opt/notebooks",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/opt/notebooks,type=bind,consistency=cached"
+}

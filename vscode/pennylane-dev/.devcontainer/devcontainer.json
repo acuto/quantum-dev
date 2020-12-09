@@ -1,0 +1,12 @@
+{
+  "name": "pennylane-dev",
+  "image": "pennylane-dev:20.12",
+  "runArgs": ["-it"],
+  "forwardPorts": [8883],
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter"
+  ],
+  "workspaceFolder": "/opt/notebooks",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/opt/notebooks,type=bind,consistency=cached"
+}

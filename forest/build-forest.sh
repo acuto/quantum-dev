@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build --no-cache -t forest-dev:20.10 .
+docker build --no-cache -t forest-dev:20.12 .

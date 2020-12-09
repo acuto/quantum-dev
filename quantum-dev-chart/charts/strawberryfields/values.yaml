@@ -1,6 +1,6 @@
 app: 
   name: strawberryfields
-  imageName: strawberryfields-dev:20.10
+  imageName: strawberryfields-dev:20.12
   imagePullPolicy: IfNotPresent
   containerCommand: "/opt/conda/envs/strawberryfields/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8884 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /opt/notebooks

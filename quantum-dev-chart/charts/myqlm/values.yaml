@@ -1,6 +1,6 @@
 app: 
   name: myqlm
-  imageName: myqlm-dev:20.10
+  imageName: myqlm-dev:20.12
   imagePullPolicy: IfNotPresent
   containerCommand: "/opt/conda/envs/myqlm/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=9992 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /opt/notebooks

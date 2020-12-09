@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker pull continuumio/miniconda3:4.8.2
+MINICONDA3_VERSION="4.9.2"
+docker pull continuumio/miniconda3:$MINICONDA3_VERSION

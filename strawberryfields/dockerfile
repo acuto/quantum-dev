@@ -8,15 +8,20 @@ LABEL vendor="NTT DATA"
 # Set version levels
 ENV PYTHON_VERSION 3.7.9
 ENV IPYKERNEL_VERSION 5.3.4
-ENV STRAWBERRYFIELDS_VERSION 0.16.0
+
+# Copy Python requirements
+COPY requirements.txt .
 
 # Create environment for Xanadu Strawberry Fields
-RUN conda create --name strawberryfields --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name strawberryfields pip install --use-feature=2020-resolver strawberryfields==$STRAWBERRYFIELDS_VERSION
-RUN conda run --name strawberryfields python -m ipykernel install --user --name strawberryfields --display-name "Strawberry Fields"
+RUN conda create --name strawberryfields --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name strawberryfields pip install -r requirements.txt && \
+    conda run --name strawberryfields python -m ipykernel install --user --name strawberryfields --display-name "Strawberry Fields"
 
 # Clean Conda installation
 RUN conda clean --yes --all
+
+# Create Jupyter Notebook folder
+RUN mkdir /opt/notebooks && cd /opt/notebooks
 
 # Expose port for Jupyter Lab web access
 EXPOSE 8884

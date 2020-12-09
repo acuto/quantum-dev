@@ -8,15 +8,20 @@ LABEL vendor="NTT DATA"
 # Set version levels
 ENV PYTHON_VERSION 3.7.9
 ENV IPYKERNEL_VERSION 5.3.4
-ENV PENNYLANE_VERSION 0.12.0
+
+# Copy Python requirements
+COPY requirements.txt .
 
 # Create environment for Xanadu PennyLane
-RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name pennylane pip install --use-feature=2020-resolver pennylane==$PENNYLANE_VERSION
-RUN conda run --name pennylane python -m ipykernel install --user --name pennylane --display-name "PennyLane"
+RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name pennylane pip install -r requirements.txt && \
+    conda run --name pennylane python -m ipykernel install --user --name pennylane --display-name "PennyLane"
 
 # Clean Conda installation
 RUN conda clean --yes --all
+
+# Create Jupyter Notebook folder
+RUN mkdir /opt/notebooks && cd /opt/notebooks
 
 # Expose port for Jupyter Lab web access
 EXPOSE 8883

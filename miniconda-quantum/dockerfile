@@ -13,18 +13,14 @@ ENV JUPYTER_VERSION 1.0.0
 ENV JUPYTERLAB_VERSION 2.2.6
 
 # Install GCC on Linux
-RUN apt-get update
-RUN apt-get install --yes gcc=$GCC_VERSION
+RUN apt-get update && \
+    apt-get install --yes gcc=$GCC_VERSION
 
 # Update Conda
 RUN conda install --yes conda=$CONDA_VERSION
 
 # Install Jupyter
-RUN conda install --yes --quiet jupyter=$JUPYTER_VERSION
-RUN conda install --yes --quiet jupyterlab=$JUPYTERLAB_VERSION
-
-# Create Jupyter Notebook folder
-RUN mkdir /opt/notebooks && cd /opt/notebooks
+RUN conda install --yes --quiet jupyter=$JUPYTER_VERSION jupyterlab=$JUPYTERLAB_VERSION
 
 # Define default command to start bash
 CMD ["bash"]

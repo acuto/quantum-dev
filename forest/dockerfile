@@ -8,25 +8,30 @@ LABEL vendor="NTT DATA"
 # Set version levels
 ENV PYTHON_VERSION 3.7.9
 ENV IPYKERNEL_VERSION 5.3.4
-ENV PYQUIL_VERSION 2.23.2
 ENV FOREST_SDK_VERSION 2.22.0
 
+# Copy Python requirements
+COPY requirements.txt .
+
 # Create environment for Rigetti Forest SDK
-RUN conda create --name pyquil --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name pyquil pip install --use-feature=2020-resolver pyquil==$PYQUIL_VERSION
-RUN conda run --name pyquil python -m ipykernel install --user --name pyquil --display-name "PyQuil"
+RUN conda create --name pyquil --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name pyquil pip install -r requirements.txt && \
+    conda run --name pyquil python -m ipykernel install --user --name pyquil --display-name "PyQuil"
 
 # Install Rigetti Forest SDK
-RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
-RUN tar -xf forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
-RUN apt-get install --yes liblapack-dev libblas-dev libffi-dev libzmq3-dev
-RUN bash -c "/forest-sdk-${FOREST_SDK_VERSION}-linux-deb/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.run --quiet --accept --noprogress &> /var/log/forest.log"
-RUN rm -Rf /forest-sdk-${FOREST_SDK_VERSION}-linux-deb
-RUN rm /forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
+RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2 && \
+    tar -xf forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2 && \
+    apt-get install --yes liblapack-dev libblas-dev libffi-dev libzmq3-dev && \
+    bash -c "/forest-sdk-${FOREST_SDK_VERSION}-linux-deb/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.run --quiet --accept --noprogress &> /var/log/forest.log" && \
+    rm -Rf /forest-sdk-${FOREST_SDK_VERSION}-linux-deb && \
+    rm /forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
 COPY start-qvm.sh /
 
 # Clean Conda installation
 RUN conda clean --yes --all
+
+# Create Jupyter Notebook folder
+RUN mkdir /opt/notebooks && cd /opt/notebooks
 
 # Expose port for Jupyter Lab web access
 EXPOSE 8887

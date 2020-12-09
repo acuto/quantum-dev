@@ -8,19 +8,20 @@ LABEL vendor="NTT DATA"
 # Set version levels
 ENV PYTHON_VERSION 3.7.9
 ENV IPYKERNEL_VERSION 5.3.4
-ENV CIRQ_VERSION 0.9.1
-ENV TENSORFLOW_VERSION 2.3.1
-ENV TENSORFLOW_QUANTUM_VERSION 0.4.0
+
+# Copy Python requirements
+COPY requirements.txt .
 
 # Create environment for Google Cirq and Tensorflow Quantum
-RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name cirq pip install --use-feature=2020-resolver cirq==$CIRQ_VERSION
-RUN conda run --name cirq pip install --use-feature=2020-resolver tensorflow==$TENSORFLOW_VERSION
-RUN conda run --name cirq pip install --use-feature=2020-resolver tensorflow-quantum==$TENSORFLOW_QUANTUM_VERSION
-RUN conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
+RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name cirq pip install -r requirements.txt && \
+    conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
 
 # Clean Conda installation
 RUN conda clean --yes --all
+
+# Create Jupyter Notebook folder
+RUN mkdir /opt/notebooks && cd /opt/notebooks
 
 # Expose port for Jupyter Lab web access
 EXPOSE 8882

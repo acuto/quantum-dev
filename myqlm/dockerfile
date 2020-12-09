@@ -8,21 +8,25 @@ LABEL vendor="NTT DATA"
 # Set version levels
 ENV PYTHON_MYQLM_VERSION 3.6.12
 ENV IPYKERNEL_VERSION 5.3.4
-ENV MYQLM_VERSION 1.1.6
 
 # Install ImageMagick for Wand
-RUN apt-get update
-RUN apt-get install --yes libmagickwand-dev
+RUN apt-get update && \
+    apt-get install --yes libmagickwand-dev
+
+# Copy Python requirements
+COPY requirements.txt .
 
 # Create environment for Atos myQLM
-RUN conda create --name myqlm --yes python=$PYTHON_MYQLM_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name myqlm pip install --use-feature=2020-resolver myqlm==$MYQLM_VERSION
-RUN conda run --name myqlm pip install --use-feature=2020-resolver myqlm-interop[all]==$MYQLM_VERSION
-RUN conda run --name myqlm python -m qat.magics.install
-RUN conda run --name myqlm python -m ipykernel install --user --name myqlm --display-name "myQLM"
+RUN conda create --name myqlm --yes python=$PYTHON_MYQLM_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name myqlm pip install -r requirements.txt && \
+    conda run --name myqlm python -m qat.magics.install && \
+    conda run --name myqlm python -m ipykernel install --user --name myqlm --display-name "myQLM"
 
 # Clean Conda installation
 RUN conda clean --yes --all
+
+# Create Jupyter Notebook folder
+RUN mkdir /opt/notebooks && cd /opt/notebooks
 
 # Expose port for Jupyter Lab web access
 EXPOSE 9992

@@ -8,15 +8,20 @@ LABEL vendor="NTT DATA"
 # Set version levels
 ENV PYTHON_VERSION 3.7.9
 ENV IPYKERNEL_VERSION 5.3.4
-ENV DWAVE_OCEAN_SDK_VERSION 3.1.1
+
+# Copy Python requirements
+COPY requirements.txt .
 
 # Create environment for D-Wave Ocean
-RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name ocean pip install --use-feature=2020-resolver dwave-ocean-sdk==$DWAVE_OCEAN_SDK_VERSION
-RUN conda run --name ocean python -m ipykernel install --user --name ocean --display-name "Ocean"
+RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name ocean pip install -r requirements.txt && \
+    conda run --name ocean python -m ipykernel install --user --name ocean --display-name "Ocean"
 
 # Clean Conda installation
 RUN conda clean --yes --all
+
+# Create Jupyter Notebook folder
+RUN mkdir /opt/notebooks && cd /opt/notebooks
 
 # Expose port for Jupyter Lab web access
 EXPOSE 9991

@@ -14,84 +14,80 @@ ENV JUPYTERLAB_VERSION 2.2.6
 ENV PYTHON_VERSION 3.7.9
 ENV PYTHON_MYQLM_VERSION 3.6.12
 ENV IPYKERNEL_VERSION 5.3.4
-ENV QISKIT_VERSION 0.23.0
-ENV CIRQ_VERSION 0.9.1
-ENV TENSORFLOW_VERSION 2.3.1
-ENV TENSORFLOW_QUANTUM_VERSION 0.4.0
-ENV PENNYLANE_VERSION 0.12.0
-ENV STRAWBERRYFIELDS_VERSION 0.16.0
-ENV PYQUIL_VERSION 2.23.2
 ENV FOREST_SDK_VERSION 2.22.0
-ENV DWAVE_OCEAN_SDK_VERSION 3.1.1
-ENV MYQLM_VERSION 1.1.6
 
 # Install GCC on Linux
-RUN apt-get update
-RUN apt-get install --yes gcc=$GCC_VERSION
+RUN apt-get update && \
+    apt-get install --yes gcc=$GCC_VERSION
 
 # Update Conda
 RUN conda install --yes conda=$CONDA_VERSION
 
 # Install Jupyter
-RUN conda install --yes --quiet jupyter=$JUPYTER_VERSION
-RUN conda install --yes --quiet jupyterlab=$JUPYTERLAB_VERSION
+RUN conda install --yes --quiet jupyter=$JUPYTER_VERSION jupyterlab=$JUPYTERLAB_VERSION
 
-# Create Jupyter Notebook folder
-RUN mkdir /opt/notebooks && cd /opt/notebooks
+# Copy Python requirements
+COPY requirements_qiskit.txt \
+     requirements_cirq.txt \
+     requirements_pennylane.txt \
+     requirements_strawberryfields.txt \
+     requirements_forest.txt \
+     requirements_ocean.txt \
+     requirements_myqlm.txt ./
 
 # Create environment for IBM Qiskit
-RUN conda create --name qiskit --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name qiskit pip install --use-feature=2020-resolver qiskit==$QISKIT_VERSION
-RUN conda run --name qiskit python -m ipykernel install --user --name qiskit --display-name "Qiskit"
+RUN conda create --name qiskit --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name qiskit pip install -r requirements_qiskit.txt && \
+    conda run --name qiskit python -m ipykernel install --user --name qiskit --display-name "Qiskit"
 
 # Create environment for Google Cirq and Tensorflow Quantum
-RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name cirq pip install --use-feature=2020-resolver cirq==$CIRQ_VERSION
-RUN conda run --name cirq pip install --use-feature=2020-resolver tensorflow==$TENSORFLOW_VERSION
-RUN conda run --name cirq pip install --use-feature=2020-resolver tensorflow-quantum==$TENSORFLOW_QUANTUM_VERSION
-RUN conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
+RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name cirq pip install -r requirements_cirq.txt && \
+    conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
 
 # Create environment for Xanadu PennyLane
-RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name pennylane pip install --use-feature=2020-resolver pennylane==$PENNYLANE_VERSION
-RUN conda run --name pennylane python -m ipykernel install --user --name pennylane --display-name "PennyLane"
+RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name pennylane pip install -r requirements_pennylane.txt && \
+    conda run --name pennylane python -m ipykernel install --user --name pennylane --display-name "PennyLane"
 
 # Create environment for Xanadu Strawberry Fields
-RUN conda create --name strawberryfields --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name strawberryfields pip install --use-feature=2020-resolver strawberryfields==$STRAWBERRYFIELDS_VERSION
-RUN conda run --name strawberryfields python -m ipykernel install --user --name strawberryfields --display-name "Strawberry Fields"
+RUN conda create --name strawberryfields --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name strawberryfields pip install -r requirements_strawberryfields.txt && \
+    conda run --name strawberryfields python -m ipykernel install --user --name strawberryfields --display-name "Strawberry Fields"
 
 # Create environment for Rigetti Forest SDK
-RUN conda create --name pyquil --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name pyquil pip install --use-feature=2020-resolver pyquil==$PYQUIL_VERSION
-RUN conda run --name pyquil python -m ipykernel install --user --name pyquil --display-name "PyQuil"
+RUN conda create --name pyquil --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name pyquil pip install -r requirements_forest.txt && \
+    conda run --name pyquil python -m ipykernel install --user --name pyquil --display-name "PyQuil"
 
 # Install Rigetti Forest SDK
-RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
-RUN tar -xf forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
-RUN apt-get install --yes liblapack-dev libblas-dev libffi-dev libzmq3-dev
-RUN bash -c "/forest-sdk-${FOREST_SDK_VERSION}-linux-deb/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.run --quiet --accept --noprogress &> /var/log/forest.log"
-RUN rm -Rf /forest-sdk-${FOREST_SDK_VERSION}-linux-deb
-RUN rm /forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
+RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2 && \
+    tar -xf forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2 && \
+    apt-get install --yes liblapack-dev libblas-dev libffi-dev libzmq3-dev && \
+    bash -c "/forest-sdk-${FOREST_SDK_VERSION}-linux-deb/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.run --quiet --accept --noprogress &> /var/log/forest.log" && \
+    rm -Rf /forest-sdk-${FOREST_SDK_VERSION}-linux-deb && \
+    rm /forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
 COPY start-qvm.sh /
 
 # Create environment for D-Wave Ocean
-RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name ocean pip install --use-feature=2020-resolver dwave-ocean-sdk==$DWAVE_OCEAN_SDK_VERSION
-RUN conda run --name ocean python -m ipykernel install --user --name ocean --display-name "Ocean"
+RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name ocean pip install -r requirements_ocean.txt && \
+    conda run --name ocean python -m ipykernel install --user --name ocean --display-name "Ocean"
 
 # Install ImageMagick for Wand
 RUN apt-get install --yes libmagickwand-dev
 
 # Create environment for Atos myQLM
-RUN conda create --name myqlm --yes python=$PYTHON_MYQLM_VERSION ipykernel=$IPYKERNEL_VERSION
-RUN conda run --name myqlm pip install --use-feature=2020-resolver myqlm==$MYQLM_VERSION
-RUN conda run --name myqlm pip install --use-feature=2020-resolver myqlm-interop[all]==$MYQLM_VERSION
-RUN conda run --name myqlm python -m qat.magics.install
-RUN conda run --name myqlm python -m ipykernel install --user --name myqlm --display-name "myQLM"
+RUN conda create --name myqlm --yes python=$PYTHON_MYQLM_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name myqlm pip install -r requirements_myqlm.txt && \
+    conda run --name myqlm python -m qat.magics.install && \
+    conda run --name myqlm python -m ipykernel install --user --name myqlm --display-name "myQLM"
 
 # Clean Conda installation
 RUN conda clean --yes --all
+
+# Create Jupyter Notebook folder
+RUN mkdir /opt/notebooks && cd /opt/notebooks
 
 # Expose port for Jupyter Lab web access
 EXPOSE 8888

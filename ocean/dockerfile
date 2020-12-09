@@ -1,4 +1,4 @@
-FROM miniconda-quantum:20.10
+FROM miniconda-quantum:20.12
 
 LABEL name="ocean-dev"
 LABEL description="Development Environment for D-Wave Ocean"

@@ -29,5 +29,8 @@ EXPOSE 8883
 # Set working directory
 WORKDIR /opt/notebooks
 
-# Define default command to start bash
-CMD ["bash"]
+# Define entrypoint
+ENTRYPOINT ["/bin/bash", \
+            "-c", "/opt/conda/envs/pennylane/bin/jupyter lab \
+            --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8883 --no-browser \
+            --allow-root --NotebookApp.token='quantum-dev-pennylane'"]

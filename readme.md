@@ -41,7 +41,7 @@ The simplest way to set up the development environment in a private or public cl
 
 ```sh
 $ cd quantum-dev
-$ ./build-k8s.sh
+$ ./build-all.sh
 $ ./install-k8s.sh
 ```
 
@@ -80,14 +80,14 @@ $ ./uninstall-k8s.sh
 
 The simplest way to run the development environment on a workstation is to build the "All-In-One" solution. This creates one Docker container for all frameworks, each of them being accessible through the Jupyter Lab web interface. In order to avoid Python dependency inconsistencies, all frameworks are installed in private and segregated Conda environments.
 
-The Docker images can be built through the following command (more easily, by executing the `build-all.sh` script in the `all-in-one` directory):
+The Docker images can be built through the following command (more easily, by executing the `build-quantum.sh` script in the `all-in-one` directory):
 
 ```sh
 $ cd all-in-one
 $ docker build --no-cache -t quantum-dev:20.12 .
 ```
 
-Once the Docker image is built, the container is ready to be executed (`run-all.sh` script):
+Once the Docker image is built, the container is ready to be executed (`run-quantum.sh` script):
 
 ```sh
 $ docker run -it --name quantum-dev -v ${HOME}:/opt/notebooks -p 8888:8888 quantum-dev:20.12 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
@@ -99,7 +99,7 @@ The resulting URL of the Jupyter Notebook web interface is:
 
     http://127.0.0.1:8888/?token=quantum-dev
 
-The Jupyter server in the container can be gracefully shut down by typing `CTRL-C`. The `all-in-one` directory also contains useful scripts to delete the container (`rm-all.sh`) and the image (`rmi-all.sh`).
+The Jupyter server in the container can be gracefully shut down by typing `CTRL-C`. The `all-in-one` directory also contains useful scripts to delete the container (`rm-quantum.sh`) and the image (`rmi-quantum.sh`).
 
 ## Framework-specific Docker setup
 

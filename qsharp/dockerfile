@@ -1,0 +1,57 @@
+FROM miniconda-quantum:21.01
+
+LABEL name="qsharp-dev"
+LABEL description="Development Environment for Microsoft QDK"
+LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
+LABEL vendor="NTT DATA"
+
+# Set version levels
+ENV PYTHON_VERSION 3.7.9
+ENV IPYKERNEL_VERSION 5.3.4
+
+# Copy Python requirements
+COPY requirements.txt .
+
+# Create environment for Microsoft QDK
+RUN conda create --name qsharp --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name qsharp pip install -r requirements.txt
+
+# Clean Conda installation
+RUN conda clean --yes --all
+
+# Install PGP
+RUN apt-get update && \
+    apt-get install --yes pgp
+
+# Install .NET Core SDK
+RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg && \
+    mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ && \
+    wget -q https://packages.microsoft.com/config/debian/9/prod.list && \
+    mv prod.list /etc/apt/sources.list.d/microsoft-prod.list && \
+    chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg && \
+    chown root:root /etc/apt/sources.list.d/microsoft-prod.list && \
+    apt-get -y update && \
+    apt-get -y install dotnet-sdk-3.1
+
+# Istall IQ# kernel
+RUN dotnet tool install -g Microsoft.Quantum.IQSharp && \
+    export PATH="/root/.dotnet/tools:$PATH" && \
+    dotnet-iqsharp install --user --path-to-tool="$(which dotnet-iqsharp)"
+
+# Create Jupyter Notebook folder
+RUN mkdir /workspace && cd /workspace
+
+# Set working directory
+WORKDIR /workspace
+
+# Set prompt
+RUN echo "export PS1='🐳 \[\033[1;34m\]\W \[\033[1;36m\]$ \[\033[0m\]'" >> ~/.bashrc
+
+# Expose port for Jupyter Lab web access
+EXPOSE 9992
+
+# Define entrypoint
+ENTRYPOINT ["/bin/bash", \
+            "-c", "/opt/conda/envs/qsharp/bin/jupyter lab \
+            --notebook-dir=/workspace --ip='0.0.0.0' --port=9992 --no-browser \
+            --allow-root --NotebookApp.token='quantum-dev-qsharp'"]

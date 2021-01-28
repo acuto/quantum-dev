@@ -21,5 +21,8 @@ docker build --no-cache -t forest-dev:20.12 ./forest
 # Build ocean-dev docker image
 docker build --no-cache -t ocean-dev:20.12 ./ocean
 
+# Build qsharp-dev docker image
+docker build --no-cache -t qsharp-dev:21.01 ./qsharp
+
 # Build myqlm-dev docker image
 docker build --no-cache -t myqlm-dev:20.12 ./myqlm

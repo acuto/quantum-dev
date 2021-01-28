@@ -1,4 +1,4 @@
-FROM miniconda-quantum:20.12
+FROM miniconda-quantum:21.01
 
 LABEL name="forest-dev"
 LABEL description="Development Environment for Rigetti Forest SDK"
@@ -31,16 +31,19 @@ COPY start-qvm.sh /
 RUN conda clean --yes --all
 
 # Create Jupyter Notebook folder
-RUN mkdir /opt/notebooks && cd /opt/notebooks
+RUN mkdir /workspace && cd /workspace
+
+# Set working directory
+WORKDIR /workspace
+
+# Set prompt
+RUN echo "export PS1='🐳 \[\033[1;34m\]\W \[\033[1;36m\]$ \[\033[0m\]'" >> ~/.bashrc
 
 # Expose port for Jupyter Lab web access
 EXPOSE 8887
 
-# Set working directory
-WORKDIR /opt/notebooks
-
 # Define entrypoint
 ENTRYPOINT ["/bin/bash", \
             "-c", "/opt/conda/envs/pyquil/bin/jupyter lab \
-            --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8887 --no-browser \
+            --notebook-dir=/workspace --ip='0.0.0.0' --port=8887 --no-browser \
             --allow-root --NotebookApp.token='quantum-dev-forest'"]

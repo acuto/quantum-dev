@@ -1,4 +1,4 @@
-FROM miniconda-quantum:20.12
+FROM miniconda-quantum:21.01
 
 LABEL name="strawberryfields-dev"
 LABEL description="Development Environment for Xanadu Strawberry Fields"
@@ -21,16 +21,19 @@ RUN conda create --name strawberryfields --yes python=$PYTHON_VERSION ipykernel=
 RUN conda clean --yes --all
 
 # Create Jupyter Notebook folder
-RUN mkdir /opt/notebooks && cd /opt/notebooks
+RUN mkdir /workspace && cd /workspace
+
+# Set working directory
+WORKDIR /workspace
+
+# Set prompt
+RUN echo "export PS1='🐳 \[\033[1;34m\]\W \[\033[1;36m\]$ \[\033[0m\]'" >> ~/.bashrc
 
 # Expose port for Jupyter Lab web access
 EXPOSE 8884
 
-# Set working directory
-WORKDIR /opt/notebooks
-
 # Define entrypoint
 ENTRYPOINT ["/bin/bash", \
             "-c", "/opt/conda/envs/strawberryfields/bin/jupyter lab \
-            --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8884 --no-browser \
+            --notebook-dir=/workspace --ip='0.0.0.0' --port=8884 --no-browser \
             --allow-root --NotebookApp.token='quantum-dev-strawberryfields'"]

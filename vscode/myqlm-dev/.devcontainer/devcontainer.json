@@ -1,12 +1,12 @@
 {
   "name": "myqlm-dev",
-  "image": "myqlm-dev:20.12",
+  "image": "myqlm-dev:21.01",
   "runArgs": ["-it"],
-  "forwardPorts": [9992],
+  "forwardPorts": [9993],
   "extensions": [
     "ms-python.python",
     "ms-toolsai.jupyter"
   ],
-  "workspaceFolder": "/opt/notebooks",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/opt/notebooks,type=bind,consistency=cached"
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
 }

@@ -1,12 +1,13 @@
 {
-  "name": "qiskit-dev",
-  "image": "qiskit-dev:21.01",
+  "name": "qsharp-dev",
+  "image": "qsharp-dev:21.01",
   "runArgs": ["-it"],
-  "forwardPorts": [8881],
+  "forwardPorts": [9992],
   "extensions": [
+    "quantum.quantum-devkit-vscode",
+    "ms-dotnettools.csharp",
     "ms-python.python",
-    "ms-toolsai.jupyter",
-    "qiskit.qiskit-vscode"
+    "ms-toolsai.jupyter"
   ],
   "workspaceFolder": "/workspace",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"

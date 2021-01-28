@@ -1,6 +1,6 @@
 {
   "name": "quantum-dev",
-  "image": "quantum-dev:20.12",
+  "image": "quantum-dev:21.01",
   "runArgs": ["-it"],
   "forwardPorts": [8888],
   "extensions": [
@@ -8,6 +8,6 @@
     "ms-toolsai.jupyter",
     "qiskit.qiskit-vscode"
   ],
-  "workspaceFolder": "/opt/notebooks",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/opt/notebooks,type=bind,consistency=cached"
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
 }

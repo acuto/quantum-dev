@@ -19,6 +19,7 @@ The development environment features the following open-source Quantum Computing
 * **Xanadu Strawberry Fields**
 * **Rigetti Forest SDK**
 * **D-Wave Ocean SDK**
+* **Microsoft QDK**
 * **Atos myQLM**
 
 New releases of this project update the version levels for all installed components, preserving consistency of all dependencies.
@@ -53,11 +54,12 @@ The frameworks are exposed outside the cluster with `NodePort` services. In a lo
 * **Xanadu Strawberry Fields**: http://localhost:30884
 * **Rigetti Forest SDK**: http://localhost:30887
 * **D-Wave Ocean SDK**: http://localhost:30991
-* **Atos myQLM**: http://localhost:30992
+* **Microsoft QDK**: http://localhost:30992
+* **Atos myQLM**: http://localhost:30993
 
 In a private cluster environment, you could do port forwarding of these services before reaching them or, if the cluster is public, simply change `localhost` with your domain name.
 
-In the Kubernetes solution, all services are protected by a password. Default passwords for accessing any quantum framework in Jupyter Lab are in the "`quantum-dev-<framework>`" format, where "`<framework>`" must be replaced by any of "`qiskit`", "`cirq`", "`pennylane`", "`strawberryfields`", "`forest`", "`ocean`" or "`myqlm`" &mdash; e.g. to access the Qiskit framework, the default password is "`quantum-dev-qiskit`". In order to change the default passwords:
+In the Kubernetes solution, all services are protected by a password. Default passwords for accessing any quantum framework in Jupyter Lab are in the "`quantum-dev-<framework>`" format, where "`<framework>`" must be replaced by any of "`qiskit`", "`cirq`", "`pennylane`", "`strawberryfields`", "`forest`", "`ocean`", "`qsharp`" or "`myqlm`" &mdash; e.g. to access the Qiskit framework, the default password is "`quantum-dev-qiskit`". In order to change the default passwords:
 - Edit the files at `quantum-dev-chart/secrets/files`.
 - Deploy to Kubernetes by launching the `gen-secrets.sh` convenience script.
 
@@ -84,22 +86,31 @@ The Docker images can be built through the following command (more easily, by ex
 
 ```sh
 $ cd all-in-one
-$ docker build --no-cache -t quantum-dev:20.12 .
+$ docker build --no-cache -t quantum-dev:21.01 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-quantum.sh` script):
 
 ```sh
-$ docker run -it --name quantum-dev -v ${HOME}:/opt/notebooks -p 8888:8888 quantum-dev:20.12 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
+$ docker run -it --name quantum-dev -v ${HOME}:/workspace -p 8888:8888 quantum-dev:21.01 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
 ```
 
-The above command enables a volume to share Jupyter Notebooks and any other files between the host and the container &mdash; whose mount point is set to `/opt/notebooks`. The folder shared on the host is by default the home folder: in order to set your own preference, just replace the `${HOME}` statement in the script with the full path to your chosen folder. Use native path syntax when running on Windows, Mac or Linux hosts.
+The above command enables a volume to share Jupyter Notebooks and any other files between the host and the container &mdash; whose mount point is set to `/workspace`. The folder shared on the host is by default the home folder: in order to set your own preference, just replace the `${HOME}` statement in the script with the full path to your chosen folder. Use native path syntax when running on Windows, Mac or Linux hosts.
 
 The resulting URL of the Jupyter Notebook web interface is:
 
     http://127.0.0.1:8888/?token=quantum-dev
 
 The Jupyter server in the container can be gracefully shut down by typing `CTRL-C`. The `all-in-one` directory also contains useful scripts to delete the container (`rm-quantum.sh`) and the image (`rmi-quantum.sh`).
+
+---
+> **Note**: when opening a terminal in the docker workspace, keep in mind to activate the required framework environment before using it, e.g.
+```sh
+$ docker exec -it quantum-dev /bin/bash
+🐳 workspace $ conda activate pennylane
+(pennylane) 🐳 workspace $
+```
+---
 
 ## Framework-specific Docker setup
 
@@ -109,20 +120,20 @@ As a first step, valid for all frameworks, we have to build an intermediate base
 
 ```sh
 $ cd miniconda-quantum
-$ docker build --no-cache -t miniconda-quantum:20.12 .
+$ docker build --no-cache -t miniconda-quantum:21.01 .
 ```
 
-The Qiskit Docker image can be built through the following command (`build-qiskit.sh` script in the `qiskit` directory):
+As an example, the Qiskit Docker image can be built through the following command (`build-qiskit.sh` script in the `qiskit` directory):
 
 ```sh
 $ cd qiskit
-$ docker build --no-cache -t qiskit-dev:20.12 .
+$ docker build --no-cache -t qiskit-dev:21.01 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-qiskit.sh` script):
 
 ```sh
-$ docker run -it --name qiskit-dev -v ${HOME}:/opt/notebooks -p 8881:8881 qiskit-dev:20.12 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.token='quantum-dev-qiskit'"
+$ docker run -it --name qiskit-dev -v ${HOME}:/workspace -p 8881:8881 qiskit-dev:21.01 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.token='quantum-dev-qiskit'"
 ```
 
 Again, you can customize the shared folder on your host by replacing the `${HOME}` statement, and the URL or the Jupyter Lab web interface is:
@@ -130,6 +141,15 @@ Again, you can customize the shared folder on your host by replacing the `${HOME
     http://127.0.0.1:8881/?token=quantum-dev-qiskit
 
 As for the `all-in-one` solution, the `qiskit` directory also contains useful scripts to delete the container (`rm-qiskit.sh`) and the image (`rmi-qiskit.sh`).
+
+---
+> **Note**: when opening a terminal in the docker workspace, keep in mind to activate the framework environment before using it:
+```sh
+$ docker exec -it quantum-dev /bin/bash
+🐳 workspace $ conda activate qiskit
+(qiskit) 🐳 workspace $
+```
+---
 
 ## Starting Rigetti Forest QVM
 
@@ -169,7 +189,7 @@ A second method to attach to a container as your workspace is to use the VS Code
 ```json
 {
   "name": "qiskit-dev",
-  "image": "qiskit-dev:20.12",
+  "image": "qiskit-dev:21.01",
   "runArgs": ["-it"],
   "forwardPorts": [8881],
   "extensions": [
@@ -177,8 +197,8 @@ A second method to attach to a container as your workspace is to use the VS Code
     "ms-toolsai.jupyter",
     "qiskit.qiskit-vscode"
   ],
-  "workspaceFolder": "/opt/notebooks",
-  "workspaceMount": "source=${localWorkspaceFolder},target=/opt/notebooks,type=bind,consistency=cached"
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
 }
 ```
 
@@ -189,11 +209,11 @@ Simply opening with VS Code the folder containing the proper `.devcontainer/devc
 Some of the used Python packages (e.g. TensorFlow) are huge in size. Therefore, it may be a good idea to save the built Docker images locally &mdash; especially if expecting to work with low-bandwidth or 4G metered connections. Docker provides simple commands to save a tagged image to a tar file &mdash; e.g.:
 
 ```sh
-$ docker save -o quantum-dev-20.12.tar quantum-dev:20.12
+$ docker save -o quantum-dev-21.01.tar quantum-dev:21.01
 ```
 
 and then reload the image from the tar file:
 
 ```sh
-$ docker load -i quantum-dev-20.12.tar
+$ docker load -i quantum-dev-21.01.tar
 ```

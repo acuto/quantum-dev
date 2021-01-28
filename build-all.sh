@@ -1,28 +1,28 @@
 #!/bin/bash
 
 # Build miniconda-quantum base docker image
-docker build --no-cache -t miniconda-quantum:20.12 ./miniconda-quantum
+docker build --no-cache -t miniconda-quantum:21.01 ./miniconda-quantum
 
 # Build qiskit-dev docker image
-docker build --no-cache -t qiskit-dev:20.12 ./qiskit
+docker build --no-cache -t qiskit-dev:21.01 ./qiskit
 
 # Build cirq-dev docker image
-docker build --no-cache -t cirq-dev:20.12 ./cirq
+docker build --no-cache -t cirq-dev:21.01 ./cirq
 
 # Build pennylane-dev docker image
-docker build --no-cache -t pennylane-dev:20.12 ./pennylane
+docker build --no-cache -t pennylane-dev:21.01 ./pennylane
 
 # Build strawberryfields-dev docker image
-docker build --no-cache -t strawberryfields-dev:20.12 ./strawberryfields
+docker build --no-cache -t strawberryfields-dev:21.01 ./strawberryfields
 
 # Build forest-dev docker image
-docker build --no-cache -t forest-dev:20.12 ./forest
+docker build --no-cache -t forest-dev:21.01 ./forest
 
 # Build ocean-dev docker image
-docker build --no-cache -t ocean-dev:20.12 ./ocean
+docker build --no-cache -t ocean-dev:21.01 ./ocean
 
 # Build qsharp-dev docker image
 docker build --no-cache -t qsharp-dev:21.01 ./qsharp
 
 # Build myqlm-dev docker image
-docker build --no-cache -t myqlm-dev:20.12 ./myqlm
+docker build --no-cache -t myqlm-dev:21.01 ./myqlm

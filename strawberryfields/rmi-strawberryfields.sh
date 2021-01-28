@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force strawberryfields-dev:20.12
+docker rmi --force strawberryfields-dev:21.01

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build --no-cache -t qiskit-dev:20.12 .
+docker build --no-cache -t qiskit-dev:21.01 .

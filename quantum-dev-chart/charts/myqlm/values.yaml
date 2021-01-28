@@ -1,15 +1,15 @@
 app: 
   name: myqlm
-  imageName: myqlm-dev:20.12
+  imageName: myqlm-dev:21.01
   imagePullPolicy: IfNotPresent
-  containerCommand: "/opt/conda/envs/myqlm/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=9992 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
-  containerMountPath: /opt/notebooks
+  containerCommand: "/opt/conda/envs/myqlm/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=9993 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
+  containerMountPath: /workspace
   persistentStorage: 1Gi
 
 service:
   name: myqlm
   type: NodePort
-  port: 9992
-  targetPort: 9992
-  nodePort: 30992
+  port: 9993
+  targetPort: 9993
+  nodePort: 30993
   password: jupyter-myqlm-credentials

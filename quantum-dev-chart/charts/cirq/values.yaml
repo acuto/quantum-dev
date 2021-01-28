@@ -1,9 +1,9 @@
 app: 
   name: cirq
-  imageName: cirq-dev:20.12
+  imageName: cirq-dev:21.01
   imagePullPolicy: IfNotPresent
-  containerCommand: "/opt/conda/envs/cirq/bin/jupyter lab --notebook-dir=/opt/notebooks --ip='0.0.0.0' --port=8882 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
-  containerMountPath: /opt/notebooks
+  containerCommand: "/opt/conda/envs/cirq/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8882 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
+  containerMountPath: /workspace
   persistentStorage: 1Gi
 
 service:

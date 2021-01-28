@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force ocean-dev:20.12
+docker rmi --force ocean-dev:21.01

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker run -it --name myqlm-dev -v ${HOME}:/opt/notebooks -p 9992:9992 myqlm-dev:20.12 /bin/bash
+docker run -it --name myqlm-dev -v ${HOME}:/workspace -p 9993:9993 myqlm-dev:21.01 /bin/bash

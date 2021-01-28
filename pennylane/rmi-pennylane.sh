@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force pennylane-dev:20.12
+docker rmi --force pennylane-dev:21.01

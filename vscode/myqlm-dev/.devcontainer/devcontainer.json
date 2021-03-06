@@ -1,6 +1,6 @@
 {
   "name": "myqlm-dev",
-  "image": "myqlm-dev:21.01",
+  "image": "myqlm-dev:21.03",
   "runArgs": ["-it"],
   "forwardPorts": [9993],
   "extensions": [

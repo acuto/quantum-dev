@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force quantum-dev:21.01
+docker rmi --force quantum-dev:21.03

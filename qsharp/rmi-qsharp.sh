@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force qsharp-dev:21.01
+docker rmi --force qsharp-dev:21.03

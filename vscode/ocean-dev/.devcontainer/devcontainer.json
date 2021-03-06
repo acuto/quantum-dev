@@ -1,6 +1,6 @@
 {
   "name": "ocean-dev",
-  "image": "ocean-dev:21.01",
+  "image": "ocean-dev:21.03",
   "runArgs": ["-it"],
   "forwardPorts": [9991],
   "extensions": [

@@ -1,6 +1,6 @@
 {
   "name": "pennylane-dev",
-  "image": "pennylane-dev:21.01",
+  "image": "pennylane-dev:21.03",
   "runArgs": ["-it"],
   "forwardPorts": [8883],
   "extensions": [

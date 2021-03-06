@@ -18,6 +18,9 @@ RUN conda create --name pyquil --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL
     conda run --name pyquil pip install -r requirements.txt && \
     conda run --name pyquil python -m ipykernel install --user --name pyquil --display-name "PyQuil"
 
+# Clean Conda installation
+RUN conda clean --yes --all
+
 # Install Rigetti Forest SDK
 RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2 && \
     tar -xf forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2 && \
@@ -26,9 +29,6 @@ RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-${FOREST_SDK_VERSION}-l
     rm -Rf /forest-sdk-${FOREST_SDK_VERSION}-linux-deb && \
     rm /forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
 COPY start-qvm.sh /
-
-# Clean Conda installation
-RUN conda clean --yes --all
 
 # Create Jupyter Notebook folder
 RUN mkdir /workspace && cd /workspace

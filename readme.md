@@ -86,13 +86,13 @@ The Docker images can be built through the following command (more easily, by ex
 
 ```sh
 $ cd all-in-one
-$ docker build --no-cache -t quantum-dev:21.01 .
+$ docker build --no-cache -t quantum-dev:21.03 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-quantum.sh` script):
 
 ```sh
-$ docker run -it --name quantum-dev -v ${HOME}:/workspace -p 8888:8888 quantum-dev:21.01 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
+$ docker run -it --name quantum-dev -v ${HOME}:/workspace -p 8888:8888 quantum-dev:21.03 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
 ```
 
 The above command enables a volume to share Jupyter Notebooks and any other files between the host and the container &mdash; whose mount point is set to `/workspace`. The folder shared on the host is by default the home folder: in order to set your own preference, just replace the `${HOME}` statement in the script with the full path to your chosen folder. Use native path syntax when running on Windows, Mac or Linux hosts.
@@ -120,20 +120,20 @@ As a first step, valid for all frameworks, we have to build an intermediate base
 
 ```sh
 $ cd miniconda-quantum
-$ docker build --no-cache -t miniconda-quantum:21.01 .
+$ docker build --no-cache -t miniconda-quantum:21.03 .
 ```
 
 As an example, the Qiskit Docker image can be built through the following command (`build-qiskit.sh` script in the `qiskit` directory):
 
 ```sh
 $ cd qiskit
-$ docker build --no-cache -t qiskit-dev:21.01 .
+$ docker build --no-cache -t qiskit-dev:21.03 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-qiskit.sh` script):
 
 ```sh
-$ docker run -it --name qiskit-dev -v ${HOME}:/workspace -p 8881:8881 qiskit-dev:21.01 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.token='quantum-dev-qiskit'"
+$ docker run -it --name qiskit-dev -v ${HOME}:/workspace -p 8881:8881 qiskit-dev:21.03 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.token='quantum-dev-qiskit'"
 ```
 
 Again, you can customize the shared folder on your host by replacing the `${HOME}` statement, and the URL or the Jupyter Lab web interface is:
@@ -184,12 +184,12 @@ and, when using Qiskit,
 
 All such operations are necessary only when attaching to the container for the first time, since VS Code will keep track of them at a later access. When opening your notebooks, also please mind to select the right Python Kernel for their execution.
 
-A second method to attach to a container as your workspace is to use the VS Code native features for [`Development Containers`](https://code.visualstudio.com/docs/remote/create-dev-container). Though allowing for less flexibility, the advantage is that the above manual operations are automated, if VS Code is the only IDE you are going to use. All you need to do is to copy the right `.devcontainer` folder in your local workspace (the templates are available in the `vscode` directory of this project). As it can be seen, the `devcontainer.json` file contains all configurations to allow VS Code to run the relevant Docker image properly, e.g.
+A second method to attach to a container as your workspace is to use the VS Code native features for [`Development Containers`](https://code.visualstudio.com/docs/remote/create-dev-container). Though allowing for less flexibility, the advantage is that the above manual operations are automated, if VS Code is the only IDE you are going to use. All you need to do is to copy the right `.devcontainer` and `.vscode` folders in your local workspace (the templates are available in the `vscode` directory of this project). As it can be seen, the `devcontainer.json` file contains all configurations to allow VS Code to run the relevant Docker image properly, e.g.
 
 ```json
 {
   "name": "qiskit-dev",
-  "image": "qiskit-dev:21.01",
+  "image": "qiskit-dev:21.03",
   "runArgs": ["-it"],
   "forwardPorts": [8881],
   "extensions": [
@@ -202,18 +202,18 @@ A second method to attach to a container as your workspace is to use the VS Code
 }
 ```
 
-Simply opening with VS Code the folder containing the proper `.devcontainer/devcontainer.json` will start the container, configure it at attach it to the VS Code IDE.
+Simply opening with VS Code the folder containing the proper `.devcontainer/devcontainer.json` will start the container, configure it at attach it to the VS Code IDE. In addition, for framework-specific setups, the configuration in `.vscode/settings.json` will automatically select the right Python kernel.
 
 ## Saving and loading Docker images
 
 Some of the used Python packages (e.g. TensorFlow) are huge in size. Therefore, it may be a good idea to save the built Docker images locally &mdash; especially if expecting to work with low-bandwidth or 4G metered connections. Docker provides simple commands to save a tagged image to a tar file &mdash; e.g.:
 
 ```sh
-$ docker save -o quantum-dev-21.01.tar quantum-dev:21.01
+$ docker save -o quantum-dev-21.03.tar quantum-dev:21.03
 ```
 
 and then reload the image from the tar file:
 
 ```sh
-$ docker load -i quantum-dev-21.01.tar
+$ docker load -i quantum-dev-21.03.tar
 ```

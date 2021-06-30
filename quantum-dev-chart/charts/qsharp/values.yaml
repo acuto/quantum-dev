@@ -1,6 +1,6 @@
 app: 
   name: qsharp
-  imageName: qsharp-dev:21.03
+  imageName: qsharp-dev:21.06
   imagePullPolicy: IfNotPresent
   containerCommand: "/opt/conda/envs/qsharp/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=9992 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /workspace

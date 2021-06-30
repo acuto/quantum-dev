@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force myqlm-dev:21.03
+docker rmi --force myqlm-dev:21.06

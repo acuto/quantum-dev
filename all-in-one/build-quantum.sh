@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build --no-cache -t quantum-dev:21.03 .
+docker build --no-cache -t quantum-dev:21.06 .

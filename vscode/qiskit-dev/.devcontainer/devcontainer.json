@@ -1,6 +1,6 @@
 {
   "name": "qiskit-dev",
-  "image": "qiskit-dev:21.03",
+  "image": "qiskit-dev:21.06",
   "runArgs": ["-it"],
   "forwardPorts": [8881],
   "extensions": [

@@ -32,6 +32,7 @@ COPY requirements_qiskit.txt \
      requirements_pennylane.txt \
      requirements_strawberryfields.txt \
      requirements_forest.txt \
+     requirements_pytket.txt \
      requirements_ocean.txt \
      requirements_qsharp.txt \
      requirements_myqlm.txt ./
@@ -69,6 +70,11 @@ RUN wget http://downloads.rigetti.com/qcs-sdk/forest-sdk-${FOREST_SDK_VERSION}-l
     rm -Rf /forest-sdk-${FOREST_SDK_VERSION}-linux-deb && \
     rm /forest-sdk-${FOREST_SDK_VERSION}-linux-deb.tar.bz2
 COPY start-qvm.sh /
+
+# Create environment for CQC t|ket>
+RUN conda create --name pytket --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name pytket pip install -r requirements_pytket.txt && \
+    conda run --name pytket python -m ipykernel install --user --name pytket --display-name "Pytket"
 
 # Create environment for D-Wave Ocean
 RUN conda create --name ocean --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \

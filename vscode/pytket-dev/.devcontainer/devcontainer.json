@@ -1,0 +1,12 @@
+{
+  "name": "pytket-dev",
+  "image": "pytket-dev:21.06",
+  "runArgs": ["-it"],
+  "forwardPorts": [8889],
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter"
+  ],
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+}

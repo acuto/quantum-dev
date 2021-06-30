@@ -1,0 +1,39 @@
+FROM miniconda-quantum:21.06
+
+LABEL name="pytket-dev"
+LABEL description="Development Environment for CQC t|ket>"
+LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
+LABEL vendor="NTT DATA"
+
+# Set version levels
+ENV PYTHON_VERSION 3.7.9
+ENV IPYKERNEL_VERSION 5.3.4
+
+# Copy Python requirements
+COPY requirements.txt .
+
+# Create environment for CQC t|ket>
+RUN conda create --name pytket --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name pytket pip install -r requirements.txt && \
+    conda run --name pytket python -m ipykernel install --user --name pytket --display-name "Pytket"
+
+# Clean Conda installation
+RUN conda clean --yes --all
+
+# Create Jupyter Notebook folder
+RUN mkdir /workspace && cd /workspace
+
+# Set working directory
+WORKDIR /workspace
+
+# Set prompt
+RUN echo "export PS1='🐳 \[\033[1;34m\]\W \[\033[1;36m\]$ \[\033[0m\]'" >> ~/.bashrc
+
+# Expose port for Jupyter Lab web access
+EXPOSE 8889
+
+# Define entrypoint
+ENTRYPOINT ["/bin/bash", \
+            "-c", "/opt/conda/envs/pytket/bin/jupyter lab \
+            --notebook-dir=/workspace --ip='0.0.0.0' --port=8889 --no-browser \
+            --allow-root --NotebookApp.token='quantum-dev-pytket'"]

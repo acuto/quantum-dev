@@ -1,8 +1,8 @@
 # Commom packages
-matplotlib == 3.3.4
+matplotlib == 3.4.2
 ipywidgets == 7.6.3
 seaborn == 0.11.1
-pylatexenc == 2.9
+pylatexenc == 2.10
 
 # Framework-specific packages
-qiskit == 0.24.0
+qiskit == 0.27.0

@@ -1,9 +1,9 @@
 # Commom packages
-matplotlib == 3.3.4
+matplotlib == 3.4.2
 ipywidgets == 7.6.3
-pandas == 1.2.3
+pandas == 1.2.5
 seaborn == 0.11.1
-pylatexenc == 2.9
+pylatexenc == 2.10
 
 # Framework-specific packages
-pennylane == 0.14.1
+pennylane == 0.16.0

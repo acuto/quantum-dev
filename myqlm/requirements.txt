@@ -1,9 +1,9 @@
 # Commom packages
 ipywidgets == 7.6.3
 seaborn == 0.11.1
-pylatexenc == 2.9
+pylatexenc == 2.10
 
 # Framework-specific packages
-myqlm == 1.2.2
-myqlm-interop[all] == 1.1.7
-myqlm-simulators == 1.2.0
+myqlm == 1.2.3
+myqlm-interop[all] == 1.1.8
+myqlm-simulators == 1.2.2

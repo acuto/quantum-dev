@@ -1,9 +1,9 @@
 # Commom packages
 ipywidgets == 7.6.3
 seaborn == 0.11.1
-pylatexenc == 2.9
+pylatexenc == 2.10
 
 # Framework-specific packages
-cirq == 0.9.1
-tensorflow == 2.4.1
-tensorflow-quantum == 0.4.0
+cirq == 0.11.0
+tensorflow == 2.5.0
+tensorflow-quantum == 0.5.1

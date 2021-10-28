@@ -1,0 +1,9 @@
+# Commom packages
+matplotlib == 3.4.3
+ipywidgets == 7.6.5
+pandas == 1.3.4
+seaborn == 0.11.2
+pylatexenc == 2.10
+
+# Framework-specific packages
+pyquil == 3.0.1

@@ -36,15 +36,27 @@ New releases of this project update the version levels for all installed compone
 * Kubectl installed and configured on host. Installation guide can be found [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 * Helm installed on host. Installation guide can be found [here](https://helm.sh/docs/intro/install/).
 
+## Usage with Gitpod
+
+[Gitpod](https://www.gitpod.io/) is a container-based development platform that provisions ready-to-code developer environments in the cloud, accessible as SaaS through a browser or a local IDE. Gitpod is the quickest and most convenient way to use `Quantum-Dev`, provided you use [GitHub](https://github.com/) or [GitLab](https://about.gitlab.com/) as platforms for your quantum code repos. Gitpod offers various subscription plans, including a free-tier. Being it an Open Source product, it can also be freely self-hosted, and attached to private Git provider.
+
+In order to run your quantum code repo &mdash; say ``https://github.com/<github_username>/my-quantum-dev`` &mdash; in the proper execution environment (e.g. Qiskit) all you need to do is to:
+
+* Add all files included in the related `gitpod` folder (e.g. `gitpod/qiskit-dev`). Adding files in the `gitpod/quantum-dev` folder will create a larger development environment supporting all frameworks (see below [All-In-One Docker setup](#all-in-one-docker-setup)).
+* Provide the Gitpod permissions to your Git provider (GitHub in this case).
+* Open your development environment with a browser using the URL:
+
+```
+https://gitpod.io/#https://github.com/<github_username>/my-quantum-dev
+```
 
 ## Kubernetes setup
 
 The simplest way to set up the development environment in a private or public cloud is to deploy the Kubernetes solution. This creates one pod for each framework, each of them being accessible through the Jupyter Lab web interface (via `kubectl` port forwarding). All frameworks are naturally segregated by the pod structure. The complete Kubernetes stack can be built and executed through the following helper scripts:
 
 ```sh
-$ cd quantum-dev
-$ ./build-all.sh
-$ ./install-k8s.sh
+$ ./docker/build-all.sh
+$ ./kubernetes/install-k8s.sh
 ```
 
 The frameworks are exposed outside the cluster with `NodePort` services. In a local setup environment correctly supporting `NodePort` services (e.g. Kubernetes on Docker Desktop) you can easily reach them at the following URLs:
@@ -62,7 +74,7 @@ The frameworks are exposed outside the cluster with `NodePort` services. In a lo
 In a private cluster environment, you could do port forwarding of these services before reaching them or, if the cluster is public, simply change `localhost` with your domain name.
 
 In the Kubernetes solution, all services are protected by a password. Default passwords for accessing any quantum framework in Jupyter Lab are in the "`quantum-dev-<framework>`" format, where "`<framework>`" must be replaced by any of "`qiskit`", "`cirq`", "`pennylane`", "`strawberryfields`", "`forest`", "`pytket`", "`ocean`", "`qsharp`" or "`myqlm`" &mdash; e.g. to access the Qiskit framework, the default password is "`quantum-dev-qiskit`". In order to change the default passwords:
-- Edit the files at `quantum-dev-chart/secrets/files`.
+- Edit the files in `kubernetes/quantum-dev-chart/secrets/files`.
 - Deploy to Kubernetes by launching the `gen-secrets.sh` convenience script.
 
 ---
@@ -84,17 +96,17 @@ $ ./uninstall-k8s.sh
 
 The simplest way to run the development environment on a workstation is to build the "All-In-One" solution. This creates one Docker container for all frameworks, each of them being accessible through the Jupyter Lab web interface. In order to avoid Python dependency inconsistencies, all frameworks are installed in private and segregated Conda environments.
 
-The Docker images can be built through the following command (more easily, by executing the `build-quantum.sh` script in the `all-in-one` directory):
+The Docker images can be built through the following command (more easily, by executing the `build-quantum.sh` script in the `docker/quantum-dev` directory):
 
 ```sh
-$ cd all-in-one
-$ docker build --no-cache -t quantum-dev:21.06 .
+$ cd ./docker/quantum-dev
+$ docker build --no-cache -t quantum-dev:21.10 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-quantum.sh` script):
 
 ```sh
-$ docker run -d --name quantum-dev -v ${HOME}:/workspace -p 8888:8888 quantum-dev:21.06 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
+$ docker run -d --name quantum-dev -v ${HOME}:/workspace -p 8888:8888 quantum-dev:21.10 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
 ```
 
 The above command enables a volume to share Jupyter Notebooks and any other files between the host and the container &mdash; whose mount point is set to `/workspace`. The folder shared on the host is by default the home folder: in order to set your own preference, just replace the `${HOME}` statement in the script with the full path to your chosen folder. Use native path syntax when running on Windows, Mac or Linux hosts.
@@ -103,7 +115,7 @@ The resulting URL of the Jupyter Notebook web interface is:
 
 http://127.0.0.1:8888/?token=quantum-dev
 
-The Jupyter server in the container can be gracefully shut down by typing `CTRL-C`. The `all-in-one` directory also contains useful scripts to delete the container (`rm-quantum.sh`) and the image (`rmi-quantum.sh`).
+The Jupyter server in the container can be gracefully shut down by typing `CTRL-C`. The `quantum-dev` directory also contains useful scripts to delete the container (`rm-quantum.sh`) and the image (`rmi-quantum.sh`).
 
 ---
 > **Note**: when opening a terminal in the docker workspace, keep in mind to activate the required framework environment before using it, e.g.
@@ -118,24 +130,24 @@ $ docker exec -it quantum-dev /bin/bash
 
 Instead of assembling one container featuring all quantum frameworks as different Conda environments, it is possible to build separate containers for each framework. This is particularly resource-effective on a development workstation when focusing on a given framework. In the following we shall provide details for building and executing Qiskit &mdash; for the other supported frameworks, simply repeat framework-specific steps in the proper directory.
 
-As a first step, valid for all frameworks, we have to build an intermediate base image &mdash; `miniconda-quantum`, providing framework-independent operations over the base [`continuumio/miniconda3`](https://hub.docker.com/r/continuumio/miniconda3/) image &mdash; through the following command (more easily, by executing the `build-miniconda-quantum.sh` script in the `miniconda-quantum` directory):
+As a first step, valid for all frameworks, we have to build an intermediate base image &mdash; `miniconda-quantum`, providing framework-independent operations over the base [`continuumio/miniconda3`](https://hub.docker.com/r/continuumio/miniconda3/) image &mdash; through the following command (more easily, by executing the `build-miniconda-quantum.sh` script in the `docker/miniconda-quantum` directory):
 
 ```sh
-$ cd miniconda-quantum
-$ docker build --no-cache -t miniconda-quantum:21.06 .
+$ cd ./docker/miniconda-quantum
+$ docker build --no-cache -t miniconda-quantum:21.10 .
 ```
 
-As an example, the Qiskit Docker image can be built through the following command (`build-qiskit.sh` script in the `qiskit` directory):
+As an example, the Qiskit Docker image can be built through the following command (`build-qiskit.sh` script in the `docker/qiskit` directory):
 
 ```sh
-$ cd qiskit
-$ docker build --no-cache -t qiskit-dev:21.06 .
+$ cd ../qiskit
+$ docker build --no-cache -t qiskit-dev:21.10 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-qiskit.sh` script):
 
 ```sh
-$ docker run -d --name qiskit-dev -v ${HOME}:/workspace -p 8881:8881 qiskit-dev:21.06 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.token='quantum-dev-qiskit'"
+$ docker run -d --name qiskit-dev -v ${HOME}:/workspace -p 8881:8881 qiskit-dev:21.10 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.token='quantum-dev-qiskit'"
 ```
 
 Again, you can customize the shared folder on your host by replacing the `${HOME}` statement.
@@ -152,7 +164,7 @@ The default URL of the Jupyter Lab web interfaces are:
 * **Microsoft QDK**: http://127.0.0.1:9992/?token=quantum-dev-qsharp
 * **Atos myQLM**: http://127.0.0.1:9993/?token=quantum-dev-myqlm
 
-As for the `all-in-one` solution, the framework-specific directories also contains useful scripts to delete the container (e.g. `rm-qiskit.sh`) and the image (e.g. `rmi-qiskit.sh`).
+As for the `All-In-One` solution, the framework-specific directories also contains useful scripts to delete the container (e.g. `rm-qiskit.sh`) and the image (e.g. `rmi-qiskit.sh`).
 
 ---
 > **Note**: when opening a terminal in the docker workspace, keep in mind to activate the framework environment before using it:
@@ -173,7 +185,7 @@ Both quilc and QVM need to be started in the active container to run Quil progra
 $ docker exec -d quantum-dev bash -c "/start-qvm.sh"
 ```
 
-if executing the all-in-one solution, or:
+if executing the `All-In-One` solution, or:
 
 ```sh
 $ docker exec -d forest-dev bash -c "/start-qvm.sh"
@@ -201,7 +213,7 @@ A second method to attach to a container as your workspace is to use the VS Code
 ```json
 {
   "name": "qiskit-dev",
-  "image": "qiskit-dev:21.06",
+  "image": "qiskit-dev:21.10",
   "runArgs": ["-it"],
   "forwardPorts": [8881],
   "extensions": [
@@ -221,11 +233,11 @@ Simply opening with VS Code the folder containing the proper `.devcontainer/devc
 Some of the used Python packages (e.g. TensorFlow) are huge in size. Therefore, it may be a good idea to save the built Docker images locally &mdash; especially if expecting to work with low-bandwidth or 4G metered connections. Docker provides simple commands to save a tagged image to a tar file &mdash; e.g.:
 
 ```sh
-$ docker save -o quantum-dev-21.06.tar quantum-dev:21.06
+$ docker save -o quantum-dev-21.10.tar quantum-dev:21.10
 ```
 
 and then reload the image from the tar file:
 
 ```sh
-$ docker load -i quantum-dev-21.06.tar
+$ docker load -i quantum-dev-21.10.tar
 ```

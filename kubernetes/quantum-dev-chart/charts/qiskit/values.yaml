@@ -1,6 +1,6 @@
 app: 
   name: qiskit
-  imageName: qiskit-dev:21.06
+  imageName: qiskit-dev:21.10
   imagePullPolicy: IfNotPresent
   containerCommand: "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /workspace

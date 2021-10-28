@@ -1,6 +1,6 @@
 {
   "name": "forest-dev",
-  "image": "forest-dev:21.06",
+  "image": "forest-dev:21.10",
   "runArgs": ["-it"],
   "forwardPorts": [8887],
   "extensions": [

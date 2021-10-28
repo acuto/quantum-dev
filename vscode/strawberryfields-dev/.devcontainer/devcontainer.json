@@ -1,6 +1,6 @@
 {
   "name": "strawberryfields-dev",
-  "image": "strawberryfields-dev:21.06",
+  "image": "strawberryfields-dev:21.10",
   "runArgs": ["-it"],
   "forwardPorts": [8884],
   "extensions": [

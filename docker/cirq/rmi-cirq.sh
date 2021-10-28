@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force cirq-dev:21.06
+docker rmi --force cirq-dev:21.10

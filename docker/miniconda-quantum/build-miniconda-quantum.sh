@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build --no-cache -t miniconda-quantum:21.06 .
+docker build --no-cache -t miniconda-quantum:21.10 .

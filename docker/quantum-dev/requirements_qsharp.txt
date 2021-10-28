@@ -1,14 +1,14 @@
 # Commom packages
-matplotlib == 3.4.2
-ipywidgets == 7.6.3
-seaborn == 0.11.1
+matplotlib == 3.4.3
+ipywidgets == 7.6.5
+seaborn == 0.11.2
 pylatexenc == 2.10
 
 # Framework-specific packages
 pyzmq == 19.0.2
-qsharp-core == 0.18.2106.148911
-qsharp == 0.18.2106.148911
-qsharp-chemistry == 0.18.2106.148911
-azure-quantum == 0.18.2106.148911
-qdk == 0.18.2106.148911
+qsharp-core == 0.20.2110.171573
+qsharp == 0.20.2110.171573
+qsharp-chemistry == 0.20.2110.171573
+azure-quantum == 0.20.2110.171573
+qdk == 0.20.2110.171573
 PennyLane-qsharp == 0.8.0

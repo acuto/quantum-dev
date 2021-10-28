@@ -1,4 +1,4 @@
-FROM miniconda-quantum:21.06
+FROM miniconda-quantum:21.10
 
 LABEL name="forest-dev"
 LABEL description="Development Environment for Rigetti Forest SDK"
@@ -6,7 +6,7 @@ LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
 # Set version levels
-ENV PYTHON_VERSION 3.7.9
+ENV PYTHON_VERSION 3.8.8
 ENV IPYKERNEL_VERSION 5.3.4
 ENV FOREST_SDK_VERSION 2.23.0
 

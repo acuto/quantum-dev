@@ -1,4 +1,4 @@
-FROM miniconda-quantum:21.06
+FROM miniconda-quantum:21.10
 
 LABEL name="myqlm-dev"
 LABEL description="Development Environment for Atos myQLM"

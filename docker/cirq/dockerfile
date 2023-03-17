@@ -1,4 +1,4 @@
-FROM miniconda-quantum:21.10
+FROM miniconda-quantum:23.04
 
 LABEL name="cirq-dev"
 LABEL description="Development Environment for Google Cirq and Tensorflow Quantum"

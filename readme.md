@@ -100,13 +100,13 @@ The Docker images can be built through the following command (more easily, by ex
 
 ```sh
 $ cd ./docker/quantum-dev
-$ docker build --no-cache -t quantum-dev:21.10 .
+$ docker build --no-cache -t quantum-dev:23.04 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-quantum.sh` script):
 
 ```sh
-$ docker run -d --name quantum-dev -v ${HOME}:/workspace -p 8888:8888 quantum-dev:21.10 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
+$ docker run -d --name quantum-dev -v ${HOME}:/workspace -p 8888:8888 quantum-dev:23.04 /bin/bash -c "/opt/conda/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8888 --no-browser --allow-root --NotebookApp.token='quantum-dev'"
 ```
 
 The above command enables a volume to share Jupyter Notebooks and any other files between the host and the container &mdash; whose mount point is set to `/workspace`. The folder shared on the host is by default the home folder: in order to set your own preference, just replace the `${HOME}` statement in the script with the full path to your chosen folder. Use native path syntax when running on Windows, Mac or Linux hosts.
@@ -134,20 +134,20 @@ As a first step, valid for all frameworks, we have to build an intermediate base
 
 ```sh
 $ cd ./docker/miniconda-quantum
-$ docker build --no-cache -t miniconda-quantum:21.10 .
+$ docker build --no-cache -t miniconda-quantum:23.04 .
 ```
 
 As an example, the Qiskit Docker image can be built through the following command (`build-qiskit.sh` script in the `docker/qiskit` directory):
 
 ```sh
 $ cd ../qiskit
-$ docker build --no-cache -t qiskit-dev:21.10 .
+$ docker build --no-cache -t qiskit-dev:23.04 .
 ```
 
 Once the Docker image is built, the container is ready to be executed (`run-qiskit.sh` script):
 
 ```sh
-$ docker run -d --name qiskit-dev -v ${HOME}:/workspace -p 8881:8881 qiskit-dev:21.10 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.token='quantum-dev-qiskit'"
+$ docker run -d --name qiskit-dev -v ${HOME}:/workspace -p 8881:8881 qiskit-dev:23.04 /bin/bash -c "/opt/conda/envs/qiskit/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8881 --no-browser --allow-root --NotebookApp.token='quantum-dev-qiskit'"
 ```
 
 Again, you can customize the shared folder on your host by replacing the `${HOME}` statement.
@@ -213,7 +213,7 @@ A second method to attach to a container as your workspace is to use the VS Code
 ```json
 {
   "name": "qiskit-dev",
-  "image": "qiskit-dev:21.10",
+  "image": "qiskit-dev:23.04",
   "runArgs": ["-it"],
   "forwardPorts": [8881],
   "extensions": [
@@ -233,11 +233,11 @@ Simply opening with VS Code the folder containing the proper `.devcontainer/devc
 Some of the used Python packages (e.g. TensorFlow) are huge in size. Therefore, it may be a good idea to save the built Docker images locally &mdash; especially if expecting to work with low-bandwidth or 4G metered connections. Docker provides simple commands to save a tagged image to a tar file &mdash; e.g.:
 
 ```sh
-$ docker save -o quantum-dev-21.10.tar quantum-dev:21.10
+$ docker save -o quantum-dev-23.04.tar quantum-dev:23.04
 ```
 
 and then reload the image from the tar file:
 
 ```sh
-$ docker load -i quantum-dev-21.10.tar
+$ docker load -i quantum-dev-23.04.tar
 ```

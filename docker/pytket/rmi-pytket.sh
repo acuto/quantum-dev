@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force pytket-dev:21.10
+docker rmi --force pytket-dev:23.04

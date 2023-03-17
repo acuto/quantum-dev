@@ -1,6 +1,6 @@
 {
   "name": "qsharp-dev",
-  "image": "qsharp-dev:21.10",
+  "image": "qsharp-dev:23.04",
   "runArgs": ["-it"],
   "forwardPorts": [9992],
   "extensions": [

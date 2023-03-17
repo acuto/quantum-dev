@@ -1,6 +1,6 @@
 {
   "name": "cirq-dev",
-  "image": "cirq-dev:21.10",
+  "image": "cirq-dev:23.04",
   "runArgs": ["-it"],
   "forwardPorts": [8882],
   "extensions": [

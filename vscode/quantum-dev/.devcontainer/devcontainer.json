@@ -1,6 +1,6 @@
 {
   "name": "quantum-dev",
-  "image": "quantum-dev:21.10",
+  "image": "quantum-dev:23.04",
   "runArgs": ["-it"],
   "forwardPorts": [8888],
   "extensions": [

@@ -1,6 +1,6 @@
 app: 
   name: pennylane
-  imageName: pennylane-dev:21.10
+  imageName: pennylane-dev:23.04
   imagePullPolicy: IfNotPresent
   containerCommand: "/opt/conda/envs/pennylane/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8883 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /workspace

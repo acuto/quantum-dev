@@ -1,6 +1,6 @@
 app: 
   name: cirq
-  imageName: cirq-dev:21.10
+  imageName: cirq-dev:23.04
   imagePullPolicy: IfNotPresent
   containerCommand: "/opt/conda/envs/cirq/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8882 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /workspace

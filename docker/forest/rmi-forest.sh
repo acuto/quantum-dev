@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force forest-dev:21.10
+docker rmi --force forest-dev:23.04

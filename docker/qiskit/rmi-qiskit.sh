@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force qiskit-dev:21.10
+docker rmi --force qiskit-dev:23.04

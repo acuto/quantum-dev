@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker rmi --force miniconda-quantum:21.10
+docker rmi --force miniconda-quantum:23.04

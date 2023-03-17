@@ -1,7 +1,7 @@
 # Commom packages
 matplotlib == 3.7.1
 ipywidgets == 8.0.4
-pandas == 1.3.4
+pandas == 1.5.3
 seaborn == 0.11.2
 pylatexenc == 2.10
 

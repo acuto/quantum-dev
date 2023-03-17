@@ -11,4 +11,4 @@ qsharp == 0.27.258160
 qsharp-chemistry == 0.27.258160
 azure-quantum == 0.27.258160
 qdk == 0.27.258160
-PennyLane-qsharp == 0.8.0
+PennyLane-qsharp == 0.19.0

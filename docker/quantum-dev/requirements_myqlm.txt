@@ -1,6 +1,6 @@
 # Commom packages
 ipywidgets == 8.0.4
-seaborn == 0.11.2
+seaborn == 0.12.2
 pylatexenc == 2.10
 
 # Framework-specific packages

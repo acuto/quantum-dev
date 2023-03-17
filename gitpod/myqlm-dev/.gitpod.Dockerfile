@@ -9,7 +9,7 @@ LABEL vendor="NTT DATA"
 ENV CONDA_VERSION 22.11.1
 ENV JUPYTER_VERSION 1.0.0
 ENV JUPYTERLAB_VERSION 3.5.3
-ENV PYTHON_MYQLM_VERSION 3.6.12
+ENV PYTHON_VERSION 3.9.16
 ENV IPYKERNEL_VERSION 6.19.2
 
 # System packages 
@@ -32,7 +32,7 @@ RUN conda install --yes --quiet jupyter=$JUPYTER_VERSION jupyterlab=$JUPYTERLAB_
 COPY requirements.txt .
 
 # Create environment for Atos myQLM
-RUN conda create --name myqlm --yes python=$PYTHON_MYQLM_VERSION ipykernel=$IPYKERNEL_VERSION && \
+RUN conda create --name myqlm --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
     conda run --name myqlm pip install -r requirements.txt && \
     conda run --name myqlm python -m qat.magics.install && \
     conda run --name myqlm python -m ipykernel install --user --name myqlm --display-name "myQLM"

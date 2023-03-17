@@ -6,7 +6,7 @@ LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
 # Set version levels
-ENV PYTHON_MYQLM_VERSION 3.6.12
+ENV PYTHON_VERSION 3.9.16
 ENV IPYKERNEL_VERSION 6.19.2
 
 # Install ImageMagick for Wand
@@ -17,7 +17,7 @@ RUN apt-get update && \
 COPY requirements.txt .
 
 # Create environment for Atos myQLM
-RUN conda create --name myqlm --yes python=$PYTHON_MYQLM_VERSION ipykernel=$IPYKERNEL_VERSION && \
+RUN conda create --name myqlm --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
     conda run --name myqlm pip install -r requirements.txt && \
     conda run --name myqlm python -m qat.magics.install && \
     conda run --name myqlm python -m ipykernel install --user --name myqlm --display-name "myQLM"

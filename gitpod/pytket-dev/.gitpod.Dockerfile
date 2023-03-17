@@ -6,7 +6,7 @@ LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
 # Set version levels
-ENV CONDA_VERSION 4.10.3
+ENV CONDA_VERSION 22.11.1
 ENV JUPYTER_VERSION 1.0.0
 ENV JUPYTERLAB_VERSION 3.0.14
 ENV PYTHON_VERSION 3.8.8

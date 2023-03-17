@@ -6,4 +6,4 @@ seaborn == 0.12.2
 pylatexenc == 2.10
 
 # Framework-specific packages
-pyquil == 3.0.1
+pyquil == 3.3.3

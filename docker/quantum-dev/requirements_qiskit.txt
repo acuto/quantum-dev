@@ -5,4 +5,4 @@ seaborn == 0.12.2
 pylatexenc == 2.10
 
 # Framework-specific packages
-qiskit == 0.31.0
+qiskit == 0.41.1

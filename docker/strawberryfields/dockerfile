@@ -7,7 +7,7 @@ LABEL vendor="NTT DATA"
 
 # Set version levels
 ENV PYTHON_VERSION 3.9.16
-ENV IPYKERNEL_VERSION 5.3.4
+ENV IPYKERNEL_VERSION 6.19.2
 
 # Copy Python requirements
 COPY requirements.txt .

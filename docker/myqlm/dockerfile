@@ -7,7 +7,7 @@ LABEL vendor="NTT DATA"
 
 # Set version levels
 ENV PYTHON_MYQLM_VERSION 3.6.12
-ENV IPYKERNEL_VERSION 5.3.4
+ENV IPYKERNEL_VERSION 6.19.2
 
 # Install ImageMagick for Wand
 RUN apt-get update && \

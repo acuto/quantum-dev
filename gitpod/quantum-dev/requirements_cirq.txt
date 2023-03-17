@@ -5,5 +5,3 @@ pylatexenc == 2.10
 
 # Framework-specific packages
 cirq == 1.1.0
-tensorflow == 2.5.1
-tensorflow-quantum == 0.5.1

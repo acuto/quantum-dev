@@ -6,9 +6,9 @@ pylatexenc == 2.10
 
 # Framework-specific packages
 pyzmq == 19.0.2
-qsharp-core == 0.20.2110.171573
-qsharp == 0.20.2110.171573
-qsharp-chemistry == 0.20.2110.171573
-azure-quantum == 0.20.2110.171573
-qdk == 0.20.2110.171573
+qsharp-core == 0.27.258160
+qsharp == 0.27.258160
+qsharp-chemistry == 0.27.258160
+azure-quantum == 0.27.258160
+qdk == 0.27.258160
 PennyLane-qsharp == 0.8.0

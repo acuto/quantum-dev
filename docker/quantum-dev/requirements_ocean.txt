@@ -6,4 +6,4 @@ seaborn == 0.12.2
 pylatexenc == 2.10
 
 # Framework-specific packages
-dwave-ocean-sdk == 4.2.0
+dwave-ocean-sdk == 6.3.0

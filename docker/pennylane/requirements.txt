@@ -6,4 +6,4 @@ seaborn == 0.12.2
 pylatexenc == 2.10
 
 # Framework-specific packages
-pennylane == 0.18.0
+pennylane == 0.29.1

@@ -6,7 +6,7 @@ LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
 # Set version levels
-ENV PYTHON_VERSION 3.8.8
+ENV PYTHON_VERSION 3.9.16
 ENV IPYKERNEL_VERSION 5.3.4
 
 # Copy Python requirements

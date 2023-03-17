@@ -97,7 +97,7 @@ RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor 
     sudo chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg && \
     sudo chown root:root /etc/apt/sources.list.d/microsoft-prod.list && \
     sudo apt-get -y update && \
-    sudo apt-get -y install dotnet-sdk-3.1
+    sudo apt-get -y install dotnet-sdk-6.0
 
 # Istall IQ# kernel
 RUN dotnet tool install -g Microsoft.Quantum.IQSharp && \

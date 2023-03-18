@@ -2,14 +2,14 @@ app:
   name: pennylane
   imageName: pennylane-dev:23.04
   imagePullPolicy: IfNotPresent
-  containerCommand: "/opt/conda/envs/pennylane/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8883 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
+  containerCommand: "/opt/conda/envs/pennylane/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8884 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
   containerMountPath: /workspace
   persistentStorage: 1Gi
 
 service:
   name: pennylane
   type: NodePort
-  port: 8883
-  targetPort: 8883
-  nodePort: 30883
+  port: 8884
+  targetPort: 8884
+  nodePort: 30884
   password: jupyter-pennylane-credentials

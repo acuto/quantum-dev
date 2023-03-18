@@ -2,7 +2,7 @@
   "name": "pennylane-dev",
   "image": "pennylane-dev:23.04",
   "runArgs": ["-it"],
-  "forwardPorts": [8883],
+  "forwardPorts": [8884],
   "extensions": [
     "ms-python.python",
     "ms-toolsai.jupyter"

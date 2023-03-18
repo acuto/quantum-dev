@@ -100,8 +100,8 @@ The default URL of the Jupyter Lab web interfaces are:
 
 * **IBM Qiskit**: http://127.0.0.1:8881/?token=quantum-dev-qiskit 
 * **Google Cirq and TensorFlow Quantum**: http://127.0.0.1:8882/?token=quantum-dev-cirq
-* **Xanadu PennyLane**: http://127.0.0.1:8883/?token=quantum-dev-pennylane
-* **Xanadu Strawberry Fields**: http://127.0.0.1:8884/?token=quantum-dev-strawberryfields
+* **Xanadu PennyLane**: http://127.0.0.1:8884/?token=quantum-dev-pennylane
+* **Xanadu Strawberry Fields**: http://127.0.0.1:8885/?token=quantum-dev-strawberryfields
 * **Rigetti Forest SDK**: http://127.0.0.1:8887/?token=quantum-dev-forest
 * **CQC t|ket>**: http://127.0.0.1:8889/?token=quantum-dev-pytket
 * **D-Wave Ocean SDK**: http://127.0.0.1:9991/?token=quantum-dev-ocean
@@ -201,8 +201,8 @@ The frameworks are exposed outside the cluster with `NodePort` services. In a lo
 
 * **IBM Qiskit**: http://localhost:30881 
 * **Google Cirq and TensorFlow Quantum**: http://localhost:30882
-* **Xanadu PennyLane**: http://localhost:30883
-* **Xanadu Strawberry Fields**: http://localhost:30884
+* **Xanadu PennyLane**: http://localhost:30884
+* **Xanadu Strawberry Fields**: http://localhost:30885
 * **Rigetti Forest SDK**: http://localhost:30887
 * **CQC t|ket>**: http://localhost:30889
 * **D-Wave Ocean SDK**: http://localhost:30991

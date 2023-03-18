@@ -2,7 +2,7 @@
   "name": "strawberryfields-dev",
   "image": "strawberryfields-dev:23.04",
   "runArgs": ["-it"],
-  "forwardPorts": [8884],
+  "forwardPorts": [8885],
   "extensions": [
     "ms-python.python",
     "ms-toolsai.jupyter"

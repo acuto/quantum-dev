@@ -2,7 +2,7 @@ image:
     file: .gitpod.Dockerfile
 
 ports:
-    - port: 8884
+    - port: 8885
       onOpen: ignore
 
 vscode:

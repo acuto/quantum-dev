@@ -30,10 +30,10 @@ WORKDIR /workspace
 RUN echo "export PS1='🐳 \[\033[1;34m\]\W \[\033[1;36m\]$ \[\033[0m\]'" >> ~/.bashrc
 
 # Expose port for Jupyter Lab web access
-EXPOSE 8884
+EXPOSE 8885
 
 # Define entrypoint
 ENTRYPOINT ["/bin/bash", \
             "-c", "/opt/conda/envs/strawberryfields/bin/jupyter lab \
-            --notebook-dir=/workspace --ip='0.0.0.0' --port=8884 --no-browser \
+            --notebook-dir=/workspace --ip='0.0.0.0' --port=8885 --no-browser \
             --allow-root --NotebookApp.token='quantum-dev-strawberryfields'"]

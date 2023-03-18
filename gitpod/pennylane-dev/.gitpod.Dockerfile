@@ -49,10 +49,10 @@ WORKDIR /home/gitpod/workspace
 RUN echo "export PS1='🐳 \[\033[1;34m\]\W \[\033[1;36m\]$ \[\033[0m\]'" >> ~/.bashrc
 
 # Expose port for Jupyter Lab web access
-EXPOSE 8883
+EXPOSE 8884
 
 # Define entrypoint
 ENTRYPOINT ["/bin/bash", \
             "-c", "/home/gitpod/miniconda3/envs/pennylane/bin/jupyter lab \
-            --notebook-dir=/home/gitpod/workspace --ip='0.0.0.0' --port=8883 --no-browser \
+            --notebook-dir=/home/gitpod/workspace --ip='0.0.0.0' --port=8884 --no-browser \
             --allow-root --NotebookApp.token='quantum-dev-pennylane'"]

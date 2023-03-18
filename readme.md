@@ -36,62 +36,6 @@ New releases of this project update the version levels for all installed compone
 * Kubectl installed and configured on host. Installation guide can be found [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 * Helm installed on host. Installation guide can be found [here](https://helm.sh/docs/intro/install/).
 
-## Usage with Gitpod
-
-[Gitpod](https://www.gitpod.io/) is a container-based development platform that provisions ready-to-code developer environments in the cloud, accessible as SaaS through a browser or a local IDE. Gitpod is the quickest and most convenient way to use `Quantum-Dev`, provided you use [GitHub](https://github.com/) or [GitLab](https://about.gitlab.com/) as platforms for your quantum code repos. Gitpod offers various subscription plans, including a free-tier. Being it an Open Source product, it can also be freely self-hosted, and attached to private Git provider.
-
-In order to run your quantum code repo &mdash; say ``https://github.com/<github_username>/my-quantum-dev`` &mdash; in the proper execution environment (e.g. Qiskit) all you need to do is to:
-
-* Add all files included in the related `gitpod` folder (e.g. `gitpod/qiskit-dev`). Adding files in the `gitpod/quantum-dev` folder will create a larger development environment supporting all frameworks (see below [All-In-One Docker setup](#all-in-one-docker-setup)).
-* Provide the Gitpod permissions to your Git provider (GitHub in this case).
-* Open your development environment with a browser using the URL:
-
-```
-https://gitpod.io/#https://github.com/<github_username>/my-quantum-dev
-```
-
-## Kubernetes setup
-
-The simplest way to set up the development environment in a private or public cloud is to deploy the Kubernetes solution. This creates one pod for each framework, each of them being accessible through the Jupyter Lab web interface (via `kubectl` port forwarding). All frameworks are naturally segregated by the pod structure. The complete Kubernetes stack can be built and executed through the following helper scripts:
-
-```sh
-$ ./docker/build-all.sh
-$ ./kubernetes/install-k8s.sh
-```
-
-The frameworks are exposed outside the cluster with `NodePort` services. In a local setup environment correctly supporting `NodePort` services (e.g. Kubernetes on Docker Desktop) you can easily reach them at the following URLs:
-
-* **IBM Qiskit**: http://localhost:30881 
-* **Google Cirq and TensorFlow Quantum**: http://localhost:30882
-* **Xanadu PennyLane**: http://localhost:30883
-* **Xanadu Strawberry Fields**: http://localhost:30884
-* **Rigetti Forest SDK**: http://localhost:30887
-* **CQC t|ket>**: http://localhost:30889
-* **D-Wave Ocean SDK**: http://localhost:30991
-* **Microsoft QDK**: http://localhost:30992
-* **Atos myQLM**: http://localhost:30993
-
-In a private cluster environment, you could do port forwarding of these services before reaching them or, if the cluster is public, simply change `localhost` with your domain name.
-
-In the Kubernetes solution, all services are protected by a password. Default passwords for accessing any quantum framework in Jupyter Lab are in the "`quantum-dev-<framework>`" format, where "`<framework>`" must be replaced by any of "`qiskit`", "`cirq`", "`pennylane`", "`strawberryfields`", "`forest`", "`pytket`", "`ocean`", "`qsharp`" or "`myqlm`" &mdash; e.g. to access the Qiskit framework, the default password is "`quantum-dev-qiskit`". In order to change the default passwords:
-- Edit the files in `kubernetes/quantum-dev-chart/secrets/files`.
-- Deploy to Kubernetes by launching the `gen-secrets.sh` convenience script.
-
----
-> **Note**: hashed passwords can be prepared in a Jupyter Notebook through the following python commands:
-```python
-In [1]: from notebook.auth import passwd
-In [2]: passwd('<new-password>', algorithm='sha1')
-Out [2]: 'sha1:fc0d38552a1a:a13dd5d7673ad3ec727d3e1749abefe0ba570c5a'
-```
----
-
-The Kubernetes deployment can be uninstalled by launching the script:
-
-```sh
-$ ./uninstall-k8s.sh
-```
-
 ## All-In-One Docker setup
 
 The simplest way to run the development environment on a workstation is to build the "All-In-One" solution. This creates one Docker container for all frameworks, each of them being accessible through the Jupyter Lab web interface. In order to avoid Python dependency inconsistencies, all frameworks are installed in private and segregated Conda environments.
@@ -227,6 +171,64 @@ A second method to attach to a container as your workspace is to use the VS Code
 ```
 
 Simply opening with VS Code the folder containing the proper `.devcontainer/devcontainer.json` will start the container, configure it at attach it to the VS Code IDE. In addition, for framework-specific setups, the configuration in `.vscode/settings.json` will automatically select the right Python kernel.
+
+## Usage with Gitpod
+
+[Gitpod](https://www.gitpod.io/) is a container-based development platform that provisions ready-to-code developer environments in the cloud, accessible as SaaS through a browser or a local IDE. Gitpod is the quickest and most convenient way to use `Quantum-Dev`, provided you use [GitHub](https://github.com/) or [GitLab](https://about.gitlab.com/) as platforms for your quantum code repos. Gitpod offers various subscription plans, including a free-tier. Being it an Open Source product, it can also be freely self-hosted, and attached to private Git provider.
+
+In order to run your quantum code repo &mdash; say ``https://github.com/<github_username>/my-quantum-dev`` &mdash; in the proper execution environment (e.g. Qiskit) all you need to do is to:
+
+* Add all files included in the related `gitpod` folder (e.g. `gitpod/qiskit-dev`). Adding files in the `gitpod/quantum-dev` folder will create a larger development environment supporting all frameworks (see below [All-In-One Docker setup](#all-in-one-docker-setup)).
+* Provide the Gitpod permissions to your Git provider (GitHub in this case).
+* Open your development environment with a browser using the URL:
+
+```
+https://gitpod.io/#https://github.com/<github_username>/my-quantum-dev
+```
+
+## Kubernetes setup
+
+The simplest way to set up the development environment in a private or public cloud is to deploy the Kubernetes solution. This creates one pod for each framework, each of them being accessible through the Jupyter Lab web interface (via `kubectl` port forwarding). All frameworks are naturally segregated by the pod structure. The complete Kubernetes stack can be built and executed through the following helper scripts:
+
+```sh
+$ cd docker
+$ ./build-all.sh
+$ cd ../kubernetes
+$ ./install-k8s.sh
+```
+
+The frameworks are exposed outside the cluster with `NodePort` services. In a local setup environment correctly supporting `NodePort` services (e.g. Kubernetes on Docker Desktop) you can easily reach them at the following URLs:
+
+* **IBM Qiskit**: http://localhost:30881 
+* **Google Cirq and TensorFlow Quantum**: http://localhost:30882
+* **Xanadu PennyLane**: http://localhost:30883
+* **Xanadu Strawberry Fields**: http://localhost:30884
+* **Rigetti Forest SDK**: http://localhost:30887
+* **CQC t|ket>**: http://localhost:30889
+* **D-Wave Ocean SDK**: http://localhost:30991
+* **Microsoft QDK**: http://localhost:30992
+* **Atos myQLM**: http://localhost:30993
+
+In a private cluster environment, you could do port forwarding of these services before reaching them or, if the cluster is public, simply change `localhost` with your domain name.
+
+In the Kubernetes solution, all services are protected by a password. Default passwords for accessing any quantum framework in Jupyter Lab are in the "`quantum-dev-<framework>`" format, where "`<framework>`" must be replaced by any of "`qiskit`", "`cirq`", "`pennylane`", "`strawberryfields`", "`forest`", "`pytket`", "`ocean`", "`qsharp`" or "`myqlm`" &mdash; e.g. to access the Qiskit framework, the default password is "`quantum-dev-qiskit`". In order to change the default passwords:
+- Edit the files in `kubernetes/quantum-dev-chart/secrets/files`.
+- Deploy to Kubernetes by launching the `gen-secrets.sh` convenience script.
+
+---
+> **Note**: hashed passwords can be prepared in a Jupyter Notebook through the following python commands:
+```python
+In [1]: from notebook.auth import passwd
+In [2]: passwd('<new-password>', algorithm='sha1')
+Out [2]: 'sha1:fc0d38552a1a:a13dd5d7673ad3ec727d3e1749abefe0ba570c5a'
+```
+---
+
+The Kubernetes deployment can be uninstalled by launching the script:
+
+```sh
+$ ./uninstall-k8s.sh
+```
 
 ## Saving and loading Docker images
 

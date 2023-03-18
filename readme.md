@@ -172,7 +172,7 @@ A second method to attach to a container as your workspace is to use the VS Code
 
 Simply opening with VS Code the folder containing the proper `.devcontainer/devcontainer.json` will start the container, configure it at attach it to the VS Code IDE. In addition, for framework-specific setups, the configuration in `.vscode/settings.json` will automatically select the right Python kernel.
 
-## Usage with Gitpod
+## Using with Gitpod
 
 [Gitpod](https://www.gitpod.io/) is a container-based development platform that provisions ready-to-code developer environments in the cloud, accessible as SaaS through a browser or a local IDE. Gitpod is the quickest and most convenient way to use `Quantum-Dev`, provided you use [GitHub](https://github.com/) or [GitLab](https://about.gitlab.com/) as platforms for your quantum code repos. Gitpod offers various subscription plans, including a free-tier. Being it an Open Source product, it can also be freely self-hosted, and attached to private Git provider.
 

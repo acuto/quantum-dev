@@ -29,6 +29,7 @@ RUN conda install --yes --quiet jupyter=$JUPYTER_VERSION jupyterlab=$JUPYTERLAB_
 # Copy Python requirements
 COPY requirements_qiskit.txt \
      requirements_cirq.txt \
+     requirements_tfq.txt \
      requirements_pennylane.txt \
      requirements_strawberryfields.txt \
      requirements_forest.txt \
@@ -42,10 +43,15 @@ RUN conda create --name qiskit --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL
     conda run --name qiskit pip install -r requirements_qiskit.txt && \
     conda run --name qiskit python -m ipykernel install --user --name qiskit --display-name "Qiskit"
 
-# Create environment for Google Cirq and Tensorflow Quantum
+# Create environment for Google Cirq
 RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
     conda run --name cirq pip install -r requirements_cirq.txt && \
     conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
+
+# Create environment for Google TensorFlow Quantum
+RUN conda create --name tfq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name tfq pip install -r requirements_tfq.txt && \
+    conda run --name tfq python -m ipykernel install --user --name tfq --display-name "TensorFlow Quantum"
 
 # Create environment for Xanadu PennyLane
 RUN conda create --name pennylane --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \

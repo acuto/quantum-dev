@@ -1,0 +1,15 @@
+app: 
+  name: tfq
+  imageName: tfq-dev:23.04
+  imagePullPolicy: IfNotPresent
+  containerCommand: "/opt/conda/envs/tfq/bin/jupyter lab --notebook-dir=/workspace --ip='0.0.0.0' --port=8883 --no-browser --allow-root --NotebookApp.password=${JUPYTER_PASSWORD}"
+  containerMountPath: /workspace
+  persistentStorage: 1Gi
+
+service:
+  name: tfq
+  type: NodePort
+  port: 8883
+  targetPort: 8883
+  nodePort: 30883
+  password: jupyter-tfq-credentials

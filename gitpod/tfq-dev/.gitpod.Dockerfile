@@ -1,7 +1,7 @@
 FROM gitpod/workspace-base:latest
 
-LABEL name="cirq-dev"
-LABEL description="Development Environment for Google Cirq and TensorFlow Quantum"
+LABEL name="tfq-dev"
+LABEL description="Development Environment for Google TensorFlow Quantum"
 LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
@@ -31,10 +31,10 @@ RUN conda install --yes --quiet jupyter=$JUPYTER_VERSION jupyterlab=$JUPYTERLAB_
 # Copy Python requirements
 COPY requirements.txt .
 
-# Create environment for Google Cirq and TensorFlow Quantum
-RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
-    conda run --name cirq pip install -r requirements.txt && \
-    conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"
+# Create environment for Google TensorFlow Quantum
+RUN conda create --name tfq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
+    conda run --name tfq pip install -r requirements.txt && \
+    conda run --name tfq python -m ipykernel install --user --name tfq --display-name "TensorFlow Quantum"
 
 # Clean Conda installation
 RUN conda clean --yes --all
@@ -49,10 +49,10 @@ WORKDIR /home/gitpod/workspace
 RUN echo "export PS1='🐳 \[\033[1;34m\]\W \[\033[1;36m\]$ \[\033[0m\]'" >> ~/.bashrc
 
 # Expose port for Jupyter Lab web access
-EXPOSE 8882
+EXPOSE 8883
 
 # Define entrypoint
 ENTRYPOINT ["/bin/bash", \
-            "-c", "/home/gitpod/miniconda3/envs/cirq/bin/jupyter lab \
-            --notebook-dir=/home/gitpod/workspace --ip='0.0.0.0' --port=8882 --no-browser \
-            --allow-root --NotebookApp.token='quantum-dev-cirq'"]
+            "-c", "/home/gitpod/miniconda3/envs/tfq/bin/jupyter lab \
+            --notebook-dir=/home/gitpod/workspace --ip='0.0.0.0' --port=8883 --no-browser \
+            --allow-root --NotebookApp.token='quantum-dev-tfq'"]

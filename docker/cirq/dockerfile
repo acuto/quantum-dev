@@ -1,7 +1,7 @@
 FROM miniconda-quantum:23.04
 
 LABEL name="cirq-dev"
-LABEL description="Development Environment for Google Cirq and Tensorflow Quantum"
+LABEL description="Development Environment for Google Cirq"
 LABEL maintainer="Alberto Acuto alberto.acuto@nttdata.com"
 LABEL vendor="NTT DATA"
 
@@ -12,7 +12,7 @@ ENV IPYKERNEL_VERSION 6.19.2
 # Copy Python requirements
 COPY requirements.txt .
 
-# Create environment for Google Cirq and Tensorflow Quantum
+# Create environment for Google Cirq
 RUN conda create --name cirq --yes python=$PYTHON_VERSION ipykernel=$IPYKERNEL_VERSION && \
     conda run --name cirq pip install -r requirements.txt && \
     conda run --name cirq python -m ipykernel install --user --name cirq --display-name "Cirq"

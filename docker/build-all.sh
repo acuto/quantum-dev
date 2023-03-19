@@ -9,6 +9,9 @@ docker build --no-cache -t qiskit-dev:23.04 ./qiskit
 # Build cirq-dev docker image
 docker build --no-cache -t cirq-dev:23.04 ./cirq
 
+# Build tfq-dev docker image
+docker build --no-cache -t tfq-dev:23.04 ./tfq
+
 # Build pennylane-dev docker image
 docker build --no-cache -t pennylane-dev:23.04 ./pennylane
 

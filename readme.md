@@ -1,8 +1,8 @@
 # Quantum-Dev
 
-## A multi-framework development environment for Quantum Computing on Kubernetes
+## Multi-framework, cloud-native development environments for Quantum Computing
 
-### This project implements a quantum development environment, based on Jupyter and featuring the main Python-based Quantum Computing frameworks.
+### This project implements quantum development environments, based on Jupyter and featuring the main Python-based Quantum Computing frameworks.
 
 The solution meets the following main requirements:
 * **Self-consistency**: all dependencies are fully resolved within an environment deployment
@@ -14,7 +14,8 @@ The project adopts standard "Everything-as-Code" best practices, and delivers th
 The development environment features the following open-source Quantum Computing frameworks:
 
 * **IBM Qiskit**
-* **Google Cirq and TensorFlow Quantum**
+* **Google Cirq**
+* **Google TensorFlow Quantum**
 * **Xanadu PennyLane**
 * **Xanadu Strawberry Fields**
 * **Rigetti Forest SDK**
@@ -35,6 +36,8 @@ New releases of this project update the version levels for all installed compone
 * Docker installed on host. For Windows or Mac, Docker Desktop installation can be found [here](https://www.docker.com/products/docker-desktop).
 * Kubectl installed and configured on host. Installation guide can be found [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 * Helm installed on host. Installation guide can be found [here](https://helm.sh/docs/intro/install/).
+
+---
 
 ## All-In-One Docker setup
 
@@ -99,7 +102,8 @@ Again, you can customize the shared folder on your host by replacing the `${HOME
 The default URL of the Jupyter Lab web interfaces are:
 
 * **IBM Qiskit**: http://127.0.0.1:8881/?token=quantum-dev-qiskit 
-* **Google Cirq and TensorFlow Quantum**: http://127.0.0.1:8882/?token=quantum-dev-cirq
+* **Google Cirq**: http://127.0.0.1:8882/?token=quantum-dev-cirq
+* **Google TensorFlow Quantum**: http://127.0.0.1:8883/?token=quantum-dev-tfq
 * **Xanadu PennyLane**: http://127.0.0.1:8884/?token=quantum-dev-pennylane
 * **Xanadu Strawberry Fields**: http://127.0.0.1:8885/?token=quantum-dev-strawberryfields
 * **Rigetti Forest SDK**: http://127.0.0.1:8887/?token=quantum-dev-forest
@@ -137,6 +141,8 @@ $ docker exec -d forest-dev bash -c "/start-qvm.sh"
 
 if running the Forest-specific environment. In both cases, the command can also be issued by executing the `run-qvm.sh` script in the proper directory, and then the new terminal can be safely closed.
 
+---
+
 ## Integration with Visual Studio Code
 
 [`Visual Studio Code Remote Development`](https://code.visualstudio.com/docs/remote/remote-overview) allows you to use a container as a full-featured development environment. The benefit for Quantum-Dev lies in using its immutable, ready-to-use, and possibly remoted workspaces as attached to a powerful and general-purpose Integrated Development Environment (IDE).
@@ -172,6 +178,8 @@ A second method to attach to a container as your workspace is to use the VS Code
 
 Simply opening with VS Code the folder containing the proper `.devcontainer/devcontainer.json` will start the container, configure it at attach it to the VS Code IDE. In addition, for framework-specific setups, the configuration in `.vscode/settings.json` will automatically select the right Python kernel.
 
+---
+
 ## Using with Gitpod
 
 [Gitpod](https://www.gitpod.io/) is a container-based development platform that provisions ready-to-code developer environments in the cloud, accessible as SaaS through a browser or a local IDE. Gitpod is the quickest and most convenient way to use `Quantum-Dev`, provided you use [GitHub](https://github.com/) or [GitLab](https://about.gitlab.com/) as platforms for your quantum code repos. Gitpod offers various subscription plans, including a free-tier. Being it an Open Source product, it can also be freely self-hosted, and attached to private Git provider.
@@ -185,6 +193,8 @@ In order to run your quantum code repo &mdash; say ``https://github.com/<github_
 ```
 https://gitpod.io/#https://github.com/<github_username>/my-quantum-dev
 ```
+
+---
 
 ## Kubernetes setup
 
@@ -200,7 +210,8 @@ $ ./install-k8s.sh
 The frameworks are exposed outside the cluster with `NodePort` services. In a local setup environment correctly supporting `NodePort` services (e.g. Kubernetes on Docker Desktop) you can easily reach them at the following URLs:
 
 * **IBM Qiskit**: http://localhost:30881 
-* **Google Cirq and TensorFlow Quantum**: http://localhost:30882
+* **Google Cirq**: http://localhost:30882
+* **Google TensorFlow Quantum**: http://localhost:30883
 * **Xanadu PennyLane**: http://localhost:30884
 * **Xanadu Strawberry Fields**: http://localhost:30885
 * **Rigetti Forest SDK**: http://localhost:30887
@@ -211,7 +222,7 @@ The frameworks are exposed outside the cluster with `NodePort` services. In a lo
 
 In a private cluster environment, you could do port forwarding of these services before reaching them or, if the cluster is public, simply change `localhost` with your domain name.
 
-In the Kubernetes solution, all services are protected by a password. Default passwords for accessing any quantum framework in Jupyter Lab are in the "`quantum-dev-<framework>`" format, where "`<framework>`" must be replaced by any of "`qiskit`", "`cirq`", "`pennylane`", "`strawberryfields`", "`forest`", "`pytket`", "`ocean`", "`qsharp`" or "`myqlm`" &mdash; e.g. to access the Qiskit framework, the default password is "`quantum-dev-qiskit`". In order to change the default passwords:
+In the Kubernetes solution, all services are protected by a password. Default passwords for accessing any quantum framework in Jupyter Lab are in the "`quantum-dev-<framework>`" format, where "`<framework>`" must be replaced by any of "`qiskit`", "`cirq`", "`tfq`", "`pennylane`", "`strawberryfields`", "`forest`", "`pytket`", "`ocean`", "`qsharp`" or "`myqlm`" &mdash; e.g. to access the Qiskit framework, the default password is "`quantum-dev-qiskit`". In order to change the default passwords:
 - Edit the files in `kubernetes/quantum-dev-chart/secrets/files`.
 - Deploy to Kubernetes by launching the `gen-secrets.sh` convenience script.
 
@@ -229,8 +240,17 @@ The Kubernetes deployment can be uninstalled by launching the script:
 ```sh
 $ ./uninstall-k8s.sh
 ```
+---
 
-## Saving and loading Docker images
+## Hint: Changing shell script permissions
+
+When in a Linux environment, you may find it useful to change all script permissions in order to easily execute them. Just issue the following command in the project home directory:
+
+```sh
+$ chmod -R u+x $(find . -type f -name "*.sh")
+```
+
+## Hint: Saving and loading Docker images
 
 Some of the used Python packages (e.g. TensorFlow) are huge in size. Therefore, it may be a good idea to save the built Docker images locally &mdash; especially if expecting to work with low-bandwidth or 4G metered connections. Docker provides simple commands to save a tagged image to a tar file &mdash; e.g.:
 

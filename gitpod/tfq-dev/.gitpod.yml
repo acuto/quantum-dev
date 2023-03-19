@@ -1,0 +1,11 @@
+image:
+    file: .gitpod.Dockerfile
+
+ports:
+    - port: 8883
+      onOpen: ignore
+
+vscode:
+  extensions:
+    - ms-python.python
+    - ms-toolsai.jupyter

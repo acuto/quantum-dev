@@ -1,0 +1,12 @@
+{
+  "name": "tfq-dev",
+  "image": "tfq-dev:23.04",
+  "runArgs": ["-it"],
+  "forwardPorts": [8883],
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter"
+  ],
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+}
